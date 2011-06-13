@@ -1,0 +1,19 @@
+{
+    "name": "client.express.js",
+    "version": "0.0.1",
+    "dependencies": {
+      "buster": "0.1.0",
+      "glob": "2.0.6"
+    },
+    "description": "client.express.js is a copy of the express.js API.",
+    "homepage": "http://cre8ivethought.com/",
+    "contributors": [{
+        "name": "Mark Nijhof",
+        "email": "mark.nijhof@cre8ivethought.com",
+        "url": "http://cre8ivethought.com"
+    }],
+    "repository": {
+        "type": "git",
+        "url": "http://git.gitorious.org/buster-js/buster.git"
+    }
+}

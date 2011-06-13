@@ -1,0 +1,3 @@
+[submodule "node_modules/buster"]
+	path = node_modules/buster
+	url = git://gitorious.org/buster/buster.git
