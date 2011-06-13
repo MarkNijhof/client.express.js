@@ -4,82 +4,65 @@
 //  Released under MIT license.
 //
 
-(function(global) {
-  var clientExpress = {
-    VERSION: '0.0.1'
-  };
-  
-  if (global.ClientExpress) {
-    throw new Error('clientExpress is already defined');
-  }
-  
-  global.ClientExpress = clientExpress;
-})(typeof window === 'undefined' ? this : window);
+ClientExpress = {};
 
+require("../src/client.express.server.js");
 
-ClientExpress.prototype.createServer = function() {
+ClientExpress.createServer = function() {
   return new ClientExpress.Server();
 };
 
-ClientExpress.prototype.supported = function () {
+ClientExpress.supported = function () {
   return (typeof window.history.pushState == 'function')
 };
 
-var server = ClientExpress.Server.prototype;
+require("../src/client.express.router.js");
 
 ClientExpress.Server = (function() {
+  var _version = '0.0.1';
+  var _router;
   
-  var Server = function(){
-    this.init();
-  }
-
-});
-
-server.init = function() {
-  this._router = new ClientExpress.Routes();
-};
-
-server.routes = function() {
-  return this._router;
-};
-
-server.route = function(method, path, action) {
-  this._router.registerRoute(method, path, action);
-  return server;  
-};
-
-server.get = function(path, action) {
-  return this.route('get', path, action);
-};
-
-server.post = function(path, action) {
-  return this.route('post', path, action);
-};
-
-server.put = function(path, action) {
-  return this.route('put', path, action);
-};
-
-server.del = function(path, action) {
-  return this.route('del', path, action);
-};
-
-server.use = function(path, server) {
-  if (typeof(server) != 'ClientExpress.Server') {
-    return 'not a ClientExpress.Server';
-  }
+  var Server = function() {
+      _router = new ClientExpress.Router();    
+  };
   
-  if (path[path.length - 1] === '/') {
-    path = path.substring(0, path.length-1);
-  }
+  var server = Server.prototype;
   
-  for (var i = 0, len = server.routes().length; i < len; ++i) {
-    route = server.routes()[i];
-    this.route(route.method, path + route.path, route.action);
-  }
-};
+  server.version = function() { return _version; }
 
-ClientExpress.Route = function(method, path, action) {
+  server.router = function() { return _router; };
+
+  server.get = function(path, action) { return route(this, 'get', path, action); };
+  server.post = function(path, action) { return route(this, 'post', path, action); };
+  server.put = function(path, action) { return route(this, 'put', path, action); };
+  server.del = function(path, action) { return route(this, 'del', path, action); };
+  
+  return Server;
+
+  function route(server, method, path, action) {
+    _router.registerRoute(method, path, action);
+    return server;
+  };
+  
+})();
+
+// server.use = function(path, server) {
+//   if (typeof(server) != 'ClientExpress.Server') {
+//     return 'not a ClientExpress.Server';
+//   }
+//   
+//   if (path[path.length - 1] === '/') {
+//     path = path.substring(0, path.length-1);
+//   }
+//   
+//   for (var i = 0, len = server.routes().length; i < len; ++i) {
+//     route = server.routes()[i];
+//     this.route(route.method, path + route.path, route.action);
+//   }
+// };
+
+ClientExpress.Route = function(method, path, action, options) {
+  this.resolved = function() { return true; };
   this.method = method;
   this.path   = path;
   this.action = action;
@@ -127,15 +110,39 @@ ClientExpress.Route.prototype.match = function(path){
 };
 
 
-ClientExpress.Router = function() {
-  this._routes = {
-    get: {},
-    post: {},
-    put: {},
-    del: {}
-  };
-};
+require("../src/client.express.route.js");
 
-ClientExpress.Router.prototype.registerRoute = function(method, path, action) {
-  this._routes[method].push(new ClientExpress.Route(method, path, action));
-};
+ClientExpress.Router = (function() {
+  var _routes;
+  
+  var Router = function() {
+    _routes = {
+      get: [],
+      post: [],
+      put: [],
+      del: []
+    };
+  };
+  
+  var router = Router.prototype;
+  
+  router.match = function(method, path){
+    var route_count = _routes[method].length
+    
+    for (var i = 0; i < route_count; ++i) {
+      var route = _routes[method][i];
+      if (route.match(path)) {
+        return route;
+      }
+    }
+    
+    return { resolved: function() { return false; } };
+  };
+    
+  router.registerRoute = function(method, path, action) {
+    _routes[method].push(new ClientExpress.Route(method, path, action, { sensitive: false }));
+  };
+  
+  return Router;
+
+})();
