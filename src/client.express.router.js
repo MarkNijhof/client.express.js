@@ -1,6 +1,4 @@
 
-require("../src/client.express.route.js");
-
 ClientExpress.Router = (function() {
   var _routes;
   

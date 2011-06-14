@@ -1,8 +1,6 @@
 
 ClientExpress = {};
 
-require("../src/client.express.server.js");
-
 ClientExpress.createServer = function() {
   return new ClientExpress.Server();
 };

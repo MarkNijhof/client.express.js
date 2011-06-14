@@ -6,8 +6,6 @@
 
 ClientExpress = {};
 
-require("../src/client.express.server.js");
-
 ClientExpress.createServer = function() {
   return new ClientExpress.Server();
 };
@@ -15,8 +13,6 @@ ClientExpress.createServer = function() {
 ClientExpress.supported = function () {
   return (typeof window.history.pushState == 'function')
 };
-
-require("../src/client.express.router.js");
 
 ClientExpress.Server = (function() {
   var _version = '0.0.1';
@@ -109,8 +105,6 @@ ClientExpress.Route.prototype.match = function(path){
   return this.regexp.exec(path);
 };
 
-
-require("../src/client.express.route.js");
 
 ClientExpress.Router = (function() {
   var _routes;

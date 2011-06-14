@@ -1,6 +1,4 @@
 
-require("../src/client.express.router.js");
-
 ClientExpress.Server = (function() {
   var _version = '@VERSION';
   var _router;
