@@ -17,9 +17,11 @@ ClientExpress.supported = function () {
 ClientExpress.Server = (function() {
   var _version = '0.0.1';
   var _router;
+  var _eventListener;
   
   var Server = function() {
-      _router = new ClientExpress.Router();    
+      _router = new ClientExpress.Router();
+      _eventListener = new ClientExpress.EventListener();
   };
   
   var server = Server.prototype;
@@ -32,6 +34,23 @@ ClientExpress.Server = (function() {
   server.post = function(path, action) { return route(this, 'post', path, action); };
   server.put = function(path, action) { return route(this, 'put', path, action); };
   server.del = function(path, action) { return route(this, 'del', path, action); };
+
+  server.listen = function() { _eventListener.registerEventHandlers(); };
+  
+  server.processRequest = function(request) {
+    var route = _router.match(request.path);
+    
+    if (!route.resolved()) {
+      return false;
+    }
+    var response = new ClientExpress.Response(request);
+    route.action(request, response);
+    return processResponse(response);
+  };
+  
+  server.processResponse = function(response) {
+    console.log("processing: " + response)
+  }
   
   return Server;
 

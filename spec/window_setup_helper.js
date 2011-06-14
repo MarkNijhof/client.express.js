@@ -1,5 +1,5 @@
 
-exports.pushstate = function() {
+exports.setup = function() {
   return {
     setup_window: function() {
       global.window = { 
@@ -19,6 +19,17 @@ exports.pushstate = function() {
           pushState: undefined
         }
       };
+    },
+    
+    setup_document: function() {
+      global.document = {
+        getElementsByTagName: function() { return []; },
+        forms: []
+      };
+    },
+    
+    reset_document: function() {
+      global.document = undefined;
     }
   };
 };

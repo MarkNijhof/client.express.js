@@ -1,18 +1,20 @@
 
 var buster = require("buster");
 
-var pushstate = require("./window_setup_helper.js").pushstate();
+var setup = require("./window_setup_helper.js").setup();
 
 buster.spec.expose();
 var assertThat = buster.assert.that;
 
 var spec = describe("client.express.server", function () {
   before(function () {
-    pushstate.setup_window();
+    setup.setup_window();
+    setup.setup_document();
   });
   
   after(function() {
-    pushstate.reset_window();
+    setup.reset_window();
+    setup.reset_document();
   });
 
   should("accept a get route configuration", function () {
@@ -131,5 +133,17 @@ var spec = describe("client.express.server", function () {
     assertThat(server.router().match('get', '/path/mark/something').action()).equals('/path/:id/something/:else?');
     assertThat(server.router().match('get', '/path/mark/something/').action()).equals('/path/:id/something/:else?');
     assertThat(server.router().match('get', '/path/mark/something/nijhof').action()).equals('/path/:id/something/:else?');
+  });
+
+
+  should("be able to start listening", function () {
+    var server = new ClientExpress.Server();
+    
+    server
+      .get('/path', function(request, response) { return '/path'; })
+      .get('/path/:id?', function(request, response) { return '/path/:id?'; })
+      .get('/path/:id/something/:else?', function(request, response) { return '/path/:id/something/:else?'; });
+      
+    server.listen();
   });
 });

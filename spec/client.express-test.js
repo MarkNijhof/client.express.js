@@ -1,18 +1,20 @@
 
 var buster = require("buster");
 
-var pushstate = require("./window_setup_helper.js").pushstate();
+var setup = require("./window_setup_helper.js").setup();
 
 buster.spec.expose();
 var assertThat = buster.assert.that;
 
 var spec = describe("client.express", function () {
   before(function () {
-    pushstate.setup_window();
+    setup.setup_window();
+    setup.setup_document();
   });
   
   after(function() {
-    pushstate.reset_window();
+    setup.reset_window();
+    setup.reset_document();
   });
 
   should("return true with the existence of push state", function () {
@@ -21,7 +23,7 @@ var spec = describe("client.express", function () {
   });
 
   should("return false with the non-existence of push state", function () {
-    pushstate.reset_window_pushstate();
+    setup.reset_window_pushstate();
     
     var pushState = ClientExpress.supported();
     assertThat(pushState).isFalse();
