@@ -4,8 +4,9 @@ require.paths.unshift('.');
 
 var glob = require("glob");
 
-glob.glob("src/**/*.js", function (err, files) {
+glob.glob("./src/**/*.js", function (err, files) {
   files.forEach(function (f) {
+    console.log('require("./"' + f + ');')
     require("./" + f);
   });
 });

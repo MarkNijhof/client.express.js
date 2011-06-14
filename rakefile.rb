@@ -10,8 +10,7 @@ end
 
 desc 'Boot test server - run tests at http://localhost:8003/'
 task :test do
-  exec 'node app.js'
-  open 'localhost:8003'
+  exec 'nodemon run-tests.js'
 end
 
 desc 'Generate the documentation'
