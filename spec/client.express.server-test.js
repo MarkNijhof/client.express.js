@@ -6,11 +6,6 @@ var pushstate = require("./window_setup_helper.js").pushstate();
 buster.spec.expose();
 var assertThat = buster.assert.that;
 
-require("../src/client.express.js");
-require("../src/client.express.server.js");
-require("../src/client.express.router.js");
-require("../src/client.express.route.js");
-
 var spec = describe("client.express.server", function () {
   before(function () {
     pushstate.setup_window();
