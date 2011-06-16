@@ -3,12 +3,13 @@ ClientExpress.Request = (function(raw_data) {
   
   var Request = function(raw_data) {
     var self = this;
+    this.session = raw_data.session;
     this.params = {};
     this.title = raw_data.title;
     this.queryString = raw_data.fullPath.split("?")[1];
 
     if (this.queryString) {
-      Davis.utils.forEach(this.queryString.split("&"), function (keyval) {
+      ClientExpress.utils.forEach(this.queryString.split("&"), function (keyval) {
         var paramName = keyval.split("=")[0],
             paramValue = keyval.split("=")[1],
             nestedParamRegex = /^(\w+)\[(\w+)\]/,
@@ -27,8 +28,8 @@ ClientExpress.Request = (function(raw_data) {
     };
 
     this.method = (this.params._method || raw_data.method).toLowerCase();
-    this.path = raw_data.fullPath.replace(/\?.+$/, "");
-    // this.delegateToServer = raw_data.delegateToServer || Davis.noop;
+    this.path = raw_data.fullPath.replace(/\?.+$/, "").replace(window.location.protocol + '//' + window.location.host, '');
+    this.delegateToServer = raw_data.delegateToServer || function() {};
     // this.isForPageLoad = raw_data.forPageLoad || false;
 
     // if (Davis.Request.prev) Davis.Request.prev.makeStale(this);

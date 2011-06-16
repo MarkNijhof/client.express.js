@@ -14,8 +14,8 @@ ClientExpress.Router = (function() {
   var router = Router.prototype;
   
   router.match = function(method, path){
-    var route_count = _routes[method].length
-    
+    var route_count = _routes[method].length;
+        
     for (var i = 0; i < route_count; ++i) {
       var route = _routes[method][i];
       if (route.match(path)) {

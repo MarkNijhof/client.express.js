@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Test</title>
+    <script src="lib/jquery-1.4.4.min.js" type="text/javascript" charset="utf-8"></script>
+
+    <script src='/dist/client.express-0.0.1.js' type='text/javascript'></script>
+  </head>
+  <body>
+    <a href="/get_test">get_test</a></br>
+    
+    <form action="/post_test" method="post">
+      <input type="hidden" value="12" name="test">
+      <button type="submit">send</button>
+    </form>
+    </br></br>
+    <a href="/get_test/not_there">get_test (fails)</a></br>
+    
+    <form action="/post_test/not_there" method="post">
+      <input type="hidden" value="12" name="test">
+      <button type="submit">send (fails)</button>
+    </form>
+
+
+    <script type="text/javascript">
+      var server = ClientExpress.createServer();
+      
+      server.get('/get_test', function(request, response) {
+        console.log(request.session.test);
+      });
+      server.post('/post_test', function(request, response) {
+        request.session.test = 10;
+      });
+      
+      server.listen();
+    </script>
+
+  </body>
+</html>

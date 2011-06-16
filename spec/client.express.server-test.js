@@ -135,7 +135,6 @@ var spec = describe("client.express.server", function () {
     assertThat(server.router().match('get', '/path/mark/something/nijhof').action()).equals('/path/:id/something/:else?');
   });
 
-
   should("be able to start listening", function () {
     var server = new ClientExpress.Server();
     

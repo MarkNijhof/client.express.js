@@ -159,6 +159,59 @@ ClientExpress.utils = (function () {
     var start = start || 0
     return Array.prototype.slice.call(args, start)
   }
+  
+  var serializeArray = function(form) {
+    // Return value
+    var retVal = '';
+
+    // Getting ALL elements inside of form element
+    var els = form.getElementsByTagName('*');
+
+    // Looping through all elements inside of form and checking to see if they're "form elements"
+    for( var idx = 0; idx < els.length; idx ++) {
+      var el = els[idx];
+
+      // According to the HTTP/HTML specs we shouldn't serialize disabled controls
+      // Notice also that according to the HTTP/HTML standards we should also serialize the
+      // name/value pair meaning that the name attribute are being used as the ID of the control
+      // Though for Ra controls the name attribute will have the same value as the ID attribute
+      if( !el.disabled && el.name && el.name.length > 0 ) {
+        switch(el.tagName.toLowerCase()) {
+          case 'input':
+            switch( el.type ) {
+              // Note we SKIP Buttons and Submits since there are no reasons as to why we 
+              // should submit those anyway
+              case 'checkbox':
+              case 'radio':
+                if( el.checked ) {
+                  if( retVal.length > 0 ) {
+                    retVal += '&';
+                  }
+                  retVal += el.name + '=' + encodeURIComponent(el.value);
+                }
+                break;
+              case 'hidden':
+              case 'password':
+              case 'text':
+                if( retVal.length > 0 ) {
+                  retVal += '&';
+                }
+                retVal += el.name + '=' + encodeURIComponent(el.value);
+                break;
+            }
+            break;
+          case 'select':
+          case 'textarea':
+            if( retVal.length > 0 ) {
+              retVal += '&';
+            }
+            retVal += el.name + '=' + encodeURIComponent(el.value);
+            break;
+        }
+      }
+    }
+    return retVal;
+  }
 
   /**
    * Exposing the public interface to the Utils module
@@ -169,7 +222,8 @@ ClientExpress.utils = (function () {
     forEach: forEach,
     filter: filter,
     map: map,
-    toArray: toArray
+    toArray: toArray,
+    serializeArray: serializeArray
   }
 })()
 
