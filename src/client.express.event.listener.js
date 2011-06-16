@@ -1,35 +1,38 @@
 
 ClientExpress.EventListener = (function(server) {
-  var _server;
   
-  var EventListener = function(server) {
-    _server = server;
+  var EventListener = function() {
   };
   
-  var eventListener = EventListener.prototype;
+  EventListener.prototype.registerEventHandlers = function(server) {
+    setup_onclick_event_handler(server);
+    setup_onsubmit_event_handler(server);
+    setup_onpopstate_event_handler(server);    
+  };
   
-  eventListener.registerEventHandlers = function() {
-
+  var setup_onclick_event_handler = function(server) {
     document.onclick = function() {
       var ev = arguments[0] || window.event;
       var element = ev.target || ev.srcElement;
-      
+
       if (element.tagName.toLowerCase() == 'a') {
         var request = new ClientExpress.Request({
           method: 'get',
           fullPath: element.href,
           title: element.title,
-          session: _server.session(),
+          session: server.session,
           delegateToServer: function () {
             window.location.pathname = element.href;
           }
         });
 
-        _server.processRequest(request);
+        server.processRequest(request);
         return false;
       }
     };
+  };
 
+  var setup_onsubmit_event_handler = function(server) {
     document.onsubmit = function() {
       var ev = arguments[0] || window.event;
       var element = ev.target || ev.srcElement;
@@ -41,24 +44,25 @@ ClientExpress.EventListener = (function(server) {
           method: element.method,
           fullPath: [element.action, ClientExpress.utils.serializeArray(element)].join("?"),
           title: element.title,
-          session: _server.session(),
+          session: server.session,
           delegateToServer: function () {
             element.submit();
           }
         });
 
-        _server.processRequest(request);
+        server.processRequest(request);
         return false;
       }
     };
-    
+  };
+
+  var setup_onpopstate_event_handler = function(server) {
     // if (window.addEventListener) {
     //   window.addEventListener('popstate', onPopStateHandler, false);
     // } else if (window.attachEvent) {
     //   window.attachEvent('onpopstate', onPopStateHandler);
     // }
-    
   };
-
+  
   return EventListener;  
 })();

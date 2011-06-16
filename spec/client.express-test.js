@@ -31,11 +31,19 @@ var spec = describe("client.express", function () {
 
   should("be able to create a new server", function () {
     var server = ClientExpress.createServer();
-    assertThat(server).equals(new ClientExpress.Server());
+    assertThat(server).typeOf('object');
   });
 
   should("return the version number", function () {
     var server = ClientExpress.createServer();
-    assertThat(server.version()).equals('@VERSION');
+    assertThat(server.version).equals('@VERSION');
+  });
+
+  
+  should("not create different servers", function () {
+    var server1 = ClientExpress.createServer();
+    var server2 = ClientExpress.createServer();
+    
+    assertThat(server1.id).notEquals(server2.id);
   });
 });

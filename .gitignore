@@ -9,3 +9,4 @@ vendor/gems/*
 .components
 node_modules
 npm-debug.log
+.monitor

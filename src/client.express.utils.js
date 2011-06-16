@@ -1,14 +1,4 @@
-/*!
- * Davis - utils
- * Copyright (C) 2011 Oliver Nightingale
- * MIT Licensed
- */
 
-/**
- * A module that provides wrappers around modern JavaScript so that native implementations are used
- * whereever possible and JavaScript implementations are used in those browsers that do not natively
- * support them.
- */
 ClientExpress.utils = (function () {
 
   /**

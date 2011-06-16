@@ -1,11 +1,13 @@
 
-ClientExpress.Route = function(method, path, action, options) {
-  this.resolved = function() { return true; };
-  this.method = method;
-  this.path   = path;
-  this.action = action;
-  this.regexp = normalize(path, this.keys = [], options.sensitive);
-
+ClientExpress.Route = (function(method, path, action, options) {
+  
+  var Route = function(method, path, action, options) {
+    this.resolved = function() { return true; };
+    this.method = method;
+    this.path   = path;
+    this.action = action;
+    this.regexp = normalize(path, this.keys = [], options.sensitive);
+  };
 
   /**
    * Normalize the given path string,
@@ -41,8 +43,11 @@ ClientExpress.Route = function(method, path, action, options) {
       .replace(/\*/g, '(.+)');
     return new RegExp('^' + path + '$', sensitive ? '' : 'i');
   }
-};
 
-ClientExpress.Route.prototype.match = function(path){
-  return this.regexp.exec(path);
-};
+  Route.prototype.match = function(path){
+    return this.regexp.exec(path);
+  };
+  
+  return Route;
+  
+})();

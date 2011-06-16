@@ -15,82 +15,76 @@ ClientExpress.supported = function () {
 };
 
 ClientExpress.Server = (function() {
-  var _version = '0.0.1';
-  var _router;
-  var _eventListener;
-  var _session;
+  var appCounter = 0;
   
   var Server = function() {
-      _router = new ClientExpress.Router();
-      _eventListener = new ClientExpress.EventListener(this);
-      _session = {};
+    this.version = '0.0.1';
+    this.id = [new Date().valueOf(), appCounter++].join("-");
+    this.router = new ClientExpress.Router();
+    this.eventListener = new ClientExpress.EventListener();
+    this.session = {};
+  }
+   
+  Server.prototype.use = function(path, other_server) {
+    var that = this;
+    if (path[path.length - 1] === '/') {
+      path = path.substring(0, path.length-1);
+    }
+    
+    var routes = other_server.router.routes;
+    ClientExpress.utils.forEach(routes.get, function(other_route) {
+      add_route(that, other_route.method, path + other_route.path, other_route.action);
+    });
+  };
+
+  Server.prototype.get = function(path, action) { return add_route(this, 'get', path, action); };
+  Server.prototype.post = function(path, action) { return add_route(this, 'post', path, action); };
+  Server.prototype.put = function(path, action) { return add_route(this, 'put', path, action); };
+  Server.prototype.del = function(path, action) { return add_route(this, 'del', path, action); };
+
+  var add_route = function(server, method, path, action) {
+    console.log("Register route: " + method.toUpperCase() + " " + path)
+    server.router.registerRoute(method, path, action);
+    return server;
+  };
+
+  Server.prototype.listen = function() { 
+    var server = this;
+    this.eventListener.registerEventHandlers(server); 
   };
   
-  var server = Server.prototype;
-  
-  server.version = function() { return _version; }
-
-  server.router = function() { return _router; };
-  
-  server.session = function() { return _session };
-
-  server.get = function(path, action) { return route(this, 'get', path, action); };
-  server.post = function(path, action) { return route(this, 'post', path, action); };
-  server.put = function(path, action) { return route(this, 'put', path, action); };
-  server.del = function(path, action) { return route(this, 'del', path, action); };
-
-  server.listen = function() { _eventListener.registerEventHandlers(); };
-  
-  server.processRequest = function(request) {
-    var route = _router.match(request.method, request.path);
+  Server.prototype.processRequest = function(request) {
+    var route = this.router.match(request.method, request.path);
     
     if (!route.resolved()) {
-      console.log("Delegating to the server!")
+      console.log("Route not found on the client: delegating!")
       request.delegateToServer();
       return;
     }
-    
+
     var response = new ClientExpress.Response(request);
     route.action(request, response);
-    this.processResponse(response);
+    processResponse(response);
   };
   
-  server.processResponse = function(response) {
-    console.log("processing: " + response.request().path);
+  var processResponse = function(response) {
+    console.log("processing: " + response.request.path);
   }
   
   return Server;
-
-  function route(server, method, path, action) {
-    console.log("Register route for: " + path);
-    _router.registerRoute(method, path, action);
-    return server;
-  };
   
 })();
 
-// server.use = function(path, server) {
-//   if (typeof(server) != 'ClientExpress.Server') {
-//     return 'not a ClientExpress.Server';
-//   }
-//   
-//   if (path[path.length - 1] === '/') {
-//     path = path.substring(0, path.length-1);
-//   }
-//   
-//   for (var i = 0, len = server.routes().length; i < len; ++i) {
-//     route = server.routes()[i];
-//     this.route(route.method, path + route.path, route.action);
-//   }
-// };
 
-ClientExpress.Route = function(method, path, action, options) {
-  this.resolved = function() { return true; };
-  this.method = method;
-  this.path   = path;
-  this.action = action;
-  this.regexp = normalize(path, this.keys = [], options.sensitive);
-
+ClientExpress.Route = (function(method, path, action, options) {
+  
+  var Route = function(method, path, action, options) {
+    this.resolved = function() { return true; };
+    this.method = method;
+    this.path   = path;
+    this.action = action;
+    this.regexp = normalize(path, this.keys = [], options.sensitive);
+  };
 
   /**
    * Normalize the given path string,
@@ -126,18 +120,20 @@ ClientExpress.Route = function(method, path, action, options) {
       .replace(/\*/g, '(.+)');
     return new RegExp('^' + path + '$', sensitive ? '' : 'i');
   }
-};
 
-ClientExpress.Route.prototype.match = function(path){
-  return this.regexp.exec(path);
-};
+  Route.prototype.match = function(path){
+    return this.regexp.exec(path);
+  };
+  
+  return Route;
+  
+})();
 
 
 ClientExpress.Router = (function() {
-  var _routes;
   
   var Router = function() {
-    _routes = {
+    this.routes = {
       get: [],
       post: [],
       put: [],
@@ -145,13 +141,11 @@ ClientExpress.Router = (function() {
     };
   };
   
-  var router = Router.prototype;
-  
-  router.match = function(method, path){
-    var route_count = _routes[method].length;
+  Router.prototype.match = function(method, path){
+    var route_count = this.routes[method].length;
         
     for (var i = 0; i < route_count; ++i) {
-      var route = _routes[method][i];
+      var route = this.routes[method][i];
       if (route.match(path)) {
         return route;
       }
@@ -160,8 +154,8 @@ ClientExpress.Router = (function() {
     return { resolved: function() { return false; } };
   };
     
-  router.registerRoute = function(method, path, action) {
-    _routes[method].push(new ClientExpress.Route(method, path, action, { sensitive: false }));
+  Router.prototype.registerRoute = function(method, path, action) {
+    this.routes[method].push(new ClientExpress.Route(method, path, action, { sensitive: false }));
   };
   
   return Router;
@@ -170,37 +164,39 @@ ClientExpress.Router = (function() {
 
 
 ClientExpress.EventListener = (function(server) {
-  var _server;
   
-  var EventListener = function(server) {
-    _server = server;
+  var EventListener = function() {
   };
   
-  var eventListener = EventListener.prototype;
+  EventListener.prototype.registerEventHandlers = function(server) {
+    setup_onclick_event_handler(server);
+    setup_onsubmit_event_handler(server);
+    setup_onpopstate_event_handler(server);    
+  };
   
-  eventListener.registerEventHandlers = function() {
-    console.log("Register Event Handlers");
-
+  var setup_onclick_event_handler = function(server) {
     document.onclick = function() {
       var ev = arguments[0] || window.event;
       var element = ev.target || ev.srcElement;
-      
+
       if (element.tagName.toLowerCase() == 'a') {
         var request = new ClientExpress.Request({
           method: 'get',
           fullPath: element.href,
           title: element.title,
-          session: _server.session(),
+          session: server.session,
           delegateToServer: function () {
             window.location.pathname = element.href;
           }
         });
-        // Davis.history.pushState(request);
-        _server.processRequest(request);
+
+        server.processRequest(request);
         return false;
       }
     };
+  };
 
+  var setup_onsubmit_event_handler = function(server) {
     document.onsubmit = function() {
       var ev = arguments[0] || window.event;
       var element = ev.target || ev.srcElement;
@@ -212,80 +208,26 @@ ClientExpress.EventListener = (function(server) {
           method: element.method,
           fullPath: [element.action, ClientExpress.utils.serializeArray(element)].join("?"),
           title: element.title,
-          session: _server.session(),
+          session: server.session,
           delegateToServer: function () {
             element.submit();
           }
         });
 
-        console.log(request);
-        // Davis.history.pushState(request);
-        _server.processRequest(request);
+        server.processRequest(request);
         return false;
       }
     };
+  };
 
-
-    // var links = document.getElementsByTagName('a');
-    // for (var i = 0, length = links.length, link = links[i]; i < length; i++) {
-    //   if (link.addEventListener) {
-    //     link.addEventListener('click', clickHandler, false);
-    //     console.log("found: " + link.href);
-    //   } else if (link.attachEvent) {
-    //     link.attachEvent('onclick', clickHandler);
-    //     console.log("found: " + link.href);
-    //   }
-    // }
-    // 
-    // var forms = document.forms;
-    // for (var i = 0, length = forms.length, form = forms[i]; i < length; i++) {
-    //   if (form.addEventListener) {
-    //     form.addEventListener('sumbit', submitHandler, false);
-    //     console.log("found: " + form.action);
-    //   } else if (form.attachEvent) {
-    //     form.attachEvent('onsubmit', submitHandler);
-    //     console.log("found: " + form.action);
-    //   }
-    // }
-    
+  var setup_onpopstate_event_handler = function(server) {
     // if (window.addEventListener) {
     //   window.addEventListener('popstate', onPopStateHandler, false);
     // } else if (window.attachEvent) {
     //   window.attachEvent('onpopstate', onPopStateHandler);
     // }
-    
   };
-
-  // var handler = function(targetExtractor) {
-  //   var request = new ClientExpress.Request(targetExtractor.call(this));
-  //   // Davis.history.pushState(request);
-  //   // return _server.processRequest(request);
-  // };
-  // 
-  // var clickHandler = handler(function () {
-  //   var self = this
-  // });
-  // 
-  // var submitHandler = handler(function () {
-  //   var extractFormParams = function (form) {
-  //     return ClientExpress.utils.map(form.serializeArray(), function (attr) {
-  //       return [attr.name, attr.value].join('=')
-  //     }).join('&')
-  //   }
-  // 
-  //   var self = this
-  // 
-  //   return {
-  //     method: this.method,
-  //     fullPath: [this.action, extractFormParams(this)].join("?"),
-  //     title: this.title,
-  //     // session: _server.session(),
-  //     delegateToServer: function () {
-  //       self.submit();
-  //     }
-  //   };
-  // });
-
+  
   return EventListener;  
 })();
 
@@ -321,13 +263,7 @@ ClientExpress.Request = (function(raw_data) {
     this.method = (this.params._method || raw_data.method).toLowerCase();
     this.path = raw_data.fullPath.replace(/\?.+$/, "").replace(window.location.protocol + '//' + window.location.host, '');
     this.delegateToServer = raw_data.delegateToServer || function() {};
-    // this.isForPageLoad = raw_data.forPageLoad || false;
-
-    // if (Davis.Request.prev) Davis.Request.prev.makeStale(this);
-    // Davis.Request.prev = this;
   };
-  
-  var request = Request.prototype;
     
   return Request;
 
@@ -335,31 +271,28 @@ ClientExpress.Request = (function(raw_data) {
 
 
 ClientExpress.Response = (function(request) {
-  var _request;
   
   var Response = function(request) {
-    _request = request;
+    this.request = request;
   };
   
-  var response = Response.prototype;
-  
-  response.request = function() { 
-    return _request; 
+  Response.prototype.request = function() { 
+    return this.request; 
   };
   
-  response.send = function(string) {
+  Response.prototype.send = function(string) {
     
   };  
   
-  response.render = function(template) {
+  Response.prototype.render = function(template) {
     
   };
   
-  response.redirect = function(path) {
+  Response.prototype.redirect = function(path) {
     
   };
   
-  response.contentType = function(content_type) {
+  Response.prototype.contentType = function(content_type) {
     
   };
   
@@ -367,17 +300,7 @@ ClientExpress.Response = (function(request) {
 
 })();
 
-/*!
- * Davis - utils
- * Copyright (C) 2011 Oliver Nightingale
- * MIT Licensed
- */
 
-/**
- * A module that provides wrappers around modern JavaScript so that native implementations are used
- * whereever possible and JavaScript implementations are used in those browsers that do not natively
- * support them.
- */
 ClientExpress.utils = (function () {
 
   /**

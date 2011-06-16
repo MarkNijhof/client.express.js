@@ -1,70 +1,61 @@
 
 ClientExpress.Server = (function() {
-  var _version = '@VERSION';
-  var _router;
-  var _eventListener;
-  var _session;
+  var appCounter = 0;
   
   var Server = function() {
-      _router = new ClientExpress.Router();
-      _eventListener = new ClientExpress.EventListener(this);
-      _session = {};
+    this.version = '@VERSION';
+    this.id = [new Date().valueOf(), appCounter++].join("-");
+    this.router = new ClientExpress.Router();
+    this.eventListener = new ClientExpress.EventListener();
+    this.session = {};
+  }
+   
+  Server.prototype.use = function(path, other_server) {
+    var that = this;
+    if (path[path.length - 1] === '/') {
+      path = path.substring(0, path.length-1);
+    }
+    
+    var routes = other_server.router.routes;
+    ClientExpress.utils.forEach(routes.get, function(other_route) {
+      add_route(that, other_route.method, path + other_route.path, other_route.action);
+    });
+  };
+
+  Server.prototype.get = function(path, action) { return add_route(this, 'get', path, action); };
+  Server.prototype.post = function(path, action) { return add_route(this, 'post', path, action); };
+  Server.prototype.put = function(path, action) { return add_route(this, 'put', path, action); };
+  Server.prototype.del = function(path, action) { return add_route(this, 'del', path, action); };
+
+  var add_route = function(server, method, path, action) {
+    console.log("Register route: " + method.toUpperCase() + " " + path)
+    server.router.registerRoute(method, path, action);
+    return server;
+  };
+
+  Server.prototype.listen = function() { 
+    var server = this;
+    this.eventListener.registerEventHandlers(server); 
   };
   
-  var server = Server.prototype;
-  
-  server.version = function() { return _version; }
-
-  server.router = function() { return _router; };
-  
-  server.session = function() { return _session };
-
-  server.get = function(path, action) { return route(this, 'get', path, action); };
-  server.post = function(path, action) { return route(this, 'post', path, action); };
-  server.put = function(path, action) { return route(this, 'put', path, action); };
-  server.del = function(path, action) { return route(this, 'del', path, action); };
-
-  server.listen = function() { _eventListener.registerEventHandlers(); };
-  
-  server.processRequest = function(request) {
-    var route = _router.match(request.method, request.path);
+  Server.prototype.processRequest = function(request) {
+    var route = this.router.match(request.method, request.path);
     
     if (!route.resolved()) {
-      console.log("Delegating to the server!")
+      console.log("Route not found on the client: delegating!")
       request.delegateToServer();
       return;
     }
-    
+
     var response = new ClientExpress.Response(request);
     route.action(request, response);
-    this.processResponse(response);
+    processResponse(response);
   };
   
-  server.processResponse = function(response) {
-    console.log("processing: " + response.request().path);
+  var processResponse = function(response) {
+    console.log("processing: " + response.request.path);
   }
   
   return Server;
-
-  function route(server, method, path, action) {
-    console.log("Register route for: " + path);
-    _router.registerRoute(method, path, action);
-    return server;
-  };
   
 })();
-
-// server.use = function(path, server) {
-//   if (typeof(server) != 'ClientExpress.Server') {
-//     return 'not a ClientExpress.Server';
-//   }
-//   
-//   if (path[path.length - 1] === '/') {
-//     path = path.substring(0, path.length-1);
-//   }
-//   
-//   for (var i = 0, len = server.routes().length; i < len; ++i) {
-//     route = server.routes()[i];
-//     this.route(route.method, path + route.path, route.action);
-//   }
-// };

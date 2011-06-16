@@ -1,30 +1,23 @@
 
 ClientExpress.Response = (function(request) {
-  var _request;
   
   var Response = function(request) {
-    _request = request;
+    this.request = request;
   };
   
-  var response = Response.prototype;
-  
-  response.request = function() { 
-    return _request; 
-  };
-  
-  response.send = function(string) {
+  Response.prototype.send = function(string) {
     
   };  
   
-  response.render = function(template) {
+  Response.prototype.render = function(template) {
     
   };
   
-  response.redirect = function(path) {
+  Response.prototype.redirect = function(path) {
     
   };
   
-  response.contentType = function(content_type) {
+  Response.prototype.contentType = function(content_type) {
     
   };
   

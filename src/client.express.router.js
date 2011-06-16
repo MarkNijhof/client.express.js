@@ -1,9 +1,8 @@
 
 ClientExpress.Router = (function() {
-  var _routes;
   
   var Router = function() {
-    _routes = {
+    this.routes = {
       get: [],
       post: [],
       put: [],
@@ -11,13 +10,11 @@ ClientExpress.Router = (function() {
     };
   };
   
-  var router = Router.prototype;
-  
-  router.match = function(method, path){
-    var route_count = _routes[method].length;
+  Router.prototype.match = function(method, path){
+    var route_count = this.routes[method].length;
         
     for (var i = 0; i < route_count; ++i) {
-      var route = _routes[method][i];
+      var route = this.routes[method][i];
       if (route.match(path)) {
         return route;
       }
@@ -26,8 +23,8 @@ ClientExpress.Router = (function() {
     return { resolved: function() { return false; } };
   };
     
-  router.registerRoute = function(method, path, action) {
-    _routes[method].push(new ClientExpress.Route(method, path, action, { sensitive: false }));
+  Router.prototype.registerRoute = function(method, path, action) {
+    this.routes[method].push(new ClientExpress.Route(method, path, action, { sensitive: false }));
   };
   
   return Router;

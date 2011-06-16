@@ -30,13 +30,7 @@ ClientExpress.Request = (function(raw_data) {
     this.method = (this.params._method || raw_data.method).toLowerCase();
     this.path = raw_data.fullPath.replace(/\?.+$/, "").replace(window.location.protocol + '//' + window.location.host, '');
     this.delegateToServer = raw_data.delegateToServer || function() {};
-    // this.isForPageLoad = raw_data.forPageLoad || false;
-
-    // if (Davis.Request.prev) Davis.Request.prev.makeStale(this);
-    // Davis.Request.prev = this;
   };
-  
-  var request = Request.prototype;
     
   return Request;
 
