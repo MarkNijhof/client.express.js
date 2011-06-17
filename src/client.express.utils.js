@@ -1,4 +1,12 @@
 
+String.prototype.rpad = function(padding) { 
+  return( padding.substr(0, (padding.length-this.length) ) + this ); 
+};
+
+String.prototype.lpad = function(padding) { 
+  return( this + padding.substr(0, (padding.length-this.length) ) ); 
+};
+
 ClientExpress.utils = (function () {
 
   /**

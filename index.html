@@ -4,6 +4,7 @@
     <title>Test</title>
     <!--// <script src='/dist/client.express-0.0.1.js' type='text/javascript'></script> //-->
     <script src='/src/client.express.js' type='text/javascript'></script>
+    <script src='/src/client.express.logger.js' type='text/javascript'></script>
     <script src='/src/client.express.server.js' type='text/javascript'></script>
     <script src='/src/client.express.route.js' type='text/javascript'></script>
     <script src='/src/client.express.router.js' type='text/javascript'></script>
@@ -31,6 +32,8 @@
 
     <script type="text/javascript">
       var server = ClientExpress.createServer();
+      
+      server.logger();
       
       server.get('/get_test', function(request, response) {
         console.log(request.session.test);

@@ -10,9 +10,10 @@ ClientExpress.createServer = function() {
   return new ClientExpress.Server();
 };
 
-ClientExpress.supported = function () {
+ClientExpress.supported = function() {
   return (typeof window.history.pushState == 'function')
 };
+
 
 ClientExpress.Server = (function() {
   var appCounter = 0;
@@ -22,8 +23,13 @@ ClientExpress.Server = (function() {
     this.id = [new Date().valueOf(), appCounter++].join("-");
     this.router = new ClientExpress.Router();
     this.eventListener = new ClientExpress.EventListener();
+    this.log = new ClientExpress.Logger();
     this.session = {};
   }
+
+  Server.prototype.logger = function() {
+    this.log.enable();
+  };
    
   Server.prototype.use = function(path, other_server) {
     var that = this;
@@ -43,7 +49,7 @@ ClientExpress.Server = (function() {
   Server.prototype.del = function(path, action) { return add_route(this, 'del', path, action); };
 
   var add_route = function(server, method, path, action) {
-    console.log("Register route: " + method.toUpperCase() + " " + path)
+    server.log.information(" + ", method.toUpperCase().lpad("    "), path)
     server.router.registerRoute(method, path, action);
     return server;
   };
@@ -51,24 +57,25 @@ ClientExpress.Server = (function() {
   Server.prototype.listen = function() { 
     var server = this;
     this.eventListener.registerEventHandlers(server); 
+    this.log.information("Listening");
   };
   
   Server.prototype.processRequest = function(request) {
     var route = this.router.match(request.method, request.path);
     
     if (!route.resolved()) {
-      console.log("Route not found on the client: delegating!")
+      this.log.warning(404, request.method.toUpperCase().lpad("    "), request.path)
       request.delegateToServer();
       return;
     }
 
     var response = new ClientExpress.Response(request);
     route.action(request, response);
-    processResponse(response);
+    processResponse(response, this.log);
   };
   
-  var processResponse = function(response) {
-    console.log("processing: " + response.request.path);
+  var processResponse = function(response, log) {
+    log.information(200, response.request.method.toUpperCase().lpad("    "), response.request.path);
   }
   
   return Server;
@@ -276,10 +283,6 @@ ClientExpress.Response = (function(request) {
     this.request = request;
   };
   
-  Response.prototype.request = function() { 
-    return this.request; 
-  };
-  
   Response.prototype.send = function(string) {
     
   };  
@@ -300,6 +303,58 @@ ClientExpress.Response = (function(request) {
 
 })();
 
+
+ClientExpress.Logger = (function() {
+  
+  var Logger = function() {
+    this.log_enabled = false;
+  };
+  
+  var timestamp = function (){
+    return "[" + Date() + "]";
+  }
+
+  var formatString = function (args) {
+    var a = ClientExpress.utils.toArray(args)
+    a.unshift(timestamp())
+    return a.join(' ');
+  }
+
+  Logger.prototype.enable = function () {
+    this.log_enabled = true;
+  };
+
+  Logger.prototype.error = function () {
+    if (this.log_enabled && window.console) {
+      console.error(formatString(arguments));
+    }
+  };
+
+  Logger.prototype.information = function () {
+    if (this.log_enabled && window.console) {
+      console.info(formatString(arguments));
+    }
+  };
+
+  Logger.prototype.warning = function () {
+    if (this.log_enabled && window.console) {
+      console.warn(formatString(arguments));
+    }
+  };
+  
+  return Logger;
+
+})();
+
+
+
+String.prototype.rpad = function(padding) { 
+  return( padding.substr(0, (padding.length-this.length) ) + this ); 
+};
+
+String.prototype.lpad = function(padding) { 
+  return( this + padding.substr(0, (padding.length-this.length) ) ); 
+};
 
 ClientExpress.utils = (function () {
 

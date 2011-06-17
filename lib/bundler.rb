@@ -35,6 +35,7 @@ class Bundler
           client.express.event.listener.js
           client.express.request.js
           client.express.response.js
+          client.express.logger.js
           client.express.utils.js
         )
       end
