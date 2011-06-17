@@ -5,14 +5,8 @@ ClientExpress.Logger = (function() {
     this.log_enabled = false;
   };
   
-  var timestamp = function (){
-    return "[" + Date() + "]";
-  }
-
   var formatString = function (args) {
-    var a = ClientExpress.utils.toArray(args)
-    a.unshift(timestamp())
-    return a.join(' ');
+    return ClientExpress.utils.toArray(args).join(' ');
   }
 
   Logger.prototype.enable = function () {

@@ -69,7 +69,7 @@ ClientExpress.Server = (function() {
       return;
     }
 
-    var response = new ClientExpress.Response(request);
+    var response = new ClientExpress.Response(request, this.log);
     route.action(request, response);
     processResponse(response, this.log);
   };
@@ -277,10 +277,11 @@ ClientExpress.Request = (function(raw_data) {
 })();
 
 
-ClientExpress.Response = (function(request) {
+ClientExpress.Response = (function(request, log) {
   
-  var Response = function(request) {
+  var Response = function(request, log) {
     this.request = request;
+    this.log = log;
   };
   
   Response.prototype.send = function(string) {
@@ -310,14 +311,8 @@ ClientExpress.Logger = (function() {
     this.log_enabled = false;
   };
   
-  var timestamp = function (){
-    return "[" + Date() + "]";
-  }
-
   var formatString = function (args) {
-    var a = ClientExpress.utils.toArray(args)
-    a.unshift(timestamp())
-    return a.join(' ');
+    return ClientExpress.utils.toArray(args).join(' ');
   }
 
   Logger.prototype.enable = function () {

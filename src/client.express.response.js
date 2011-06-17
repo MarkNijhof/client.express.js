@@ -1,8 +1,9 @@
 
-ClientExpress.Response = (function(request) {
+ClientExpress.Response = (function(request, log) {
   
-  var Response = function(request) {
+  var Response = function(request, log) {
     this.request = request;
+    this.log = log;
   };
   
   Response.prototype.send = function(string) {

@@ -53,7 +53,7 @@ ClientExpress.Server = (function() {
       return;
     }
 
-    var response = new ClientExpress.Response(request);
+    var response = new ClientExpress.Response(request, this.log);
     route.action(request, response);
     processResponse(response, this.log);
   };
