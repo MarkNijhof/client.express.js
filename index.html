@@ -36,10 +36,12 @@
       server.logger();
       
       server.get('/get_test', function(request, response) {
-        console.log(request.session.test);
+        console.log("session.test = " + request.session.test);
       });
       server.post('/post_test', function(request, response) {
         request.session.test = 10;
+        console.log("setting session.test to 10");
+        response.redirect('/get_test');
       });
       
       server.listen();

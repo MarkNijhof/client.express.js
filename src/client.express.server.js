@@ -33,7 +33,7 @@ ClientExpress.Server = (function() {
   Server.prototype.del = function(path, action) { return add_route(this, 'del', path, action); };
 
   var add_route = function(server, method, path, action) {
-    server.log.information(" + ", method.toUpperCase().lpad("    "), path)
+    server.log.information(" + ", method.toUpperCase().lpad("    "), path);
     server.router.registerRoute(method, path, action);
     return server;
   };
@@ -48,19 +48,18 @@ ClientExpress.Server = (function() {
     var route = this.router.match(request.method, request.path);
     
     if (!route.resolved()) {
-      this.log.warning(404, request.method.toUpperCase().lpad("    "), request.path)
+      this.log.information(404, request.method.toUpperCase().lpad("    "), request.path);
       request.delegateToServer();
       return;
     }
 
-    var response = new ClientExpress.Response(request, this.log);
+    this.log.information(200, request.method.toUpperCase().lpad("    "), request.path);
+
+    var server = this;
+    var response = new ClientExpress.Response(request, server);
     route.action(request, response);
-    processResponse(response, this.log);
+    response.process();
   };
-  
-  var processResponse = function(response, log) {
-    log.information(200, response.request.method.toUpperCase().lpad("    "), response.request.path);
-  }
   
   return Server;
   

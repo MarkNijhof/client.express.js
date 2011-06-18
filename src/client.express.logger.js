@@ -21,7 +21,7 @@ ClientExpress.Logger = (function() {
 
   Logger.prototype.information = function () {
     if (this.log_enabled && window.console) {
-      console.info(formatString(arguments));
+      console.log(formatString(arguments));
     }
   };
 
