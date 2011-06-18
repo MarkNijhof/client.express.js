@@ -29,14 +29,17 @@
       <button type="submit">send (fails)</button>
     </form>
 
+    <div id="content" style="border: 1px solid black"></div>
 
     <script type="text/javascript">
       var server = ClientExpress.createServer();
       
+      server.content_area("content");
       server.logger();
       
       server.get('/get_test', function(request, response) {
         console.log("session.test = " + request.session.test);
+        response.send("session.test = " + request.session.test);
       });
       server.post('/post_test', function(request, response) {
         request.session.test = 10;

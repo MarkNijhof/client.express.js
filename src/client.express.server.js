@@ -9,11 +9,23 @@ ClientExpress.Server = (function() {
     this.eventListener = new ClientExpress.EventListener();
     this.log = new ClientExpress.Logger();
     this.session = {};
+    this.content_element;
   }
 
   Server.prototype.logger = function() {
     this.log.enable();
   };
+  
+  Server.prototype.content_area = function(id) {
+    this.content_element = document.getElementById ? 
+      document.getElementById(id) : 
+      (document.all ? 
+        document.all[id] : 
+        (document.layers ? 
+          document.layers[id] : 
+          null) );
+    console.log(this.content_element);
+  }
    
   Server.prototype.use = function(path, other_server) {
     var that = this;

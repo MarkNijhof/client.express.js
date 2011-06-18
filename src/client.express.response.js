@@ -39,6 +39,8 @@ ClientExpress.Response = (function(request, server) {
       this.server.processRequest(new_request);
       return;
     } 
+    
+    this.server.content_element.innerHTML = this.output;
   };
     
   return Response;
