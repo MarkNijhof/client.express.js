@@ -1,1 +1,1 @@
-web: node example/server.js
+web: example/server.js
