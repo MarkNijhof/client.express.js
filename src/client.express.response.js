@@ -19,8 +19,8 @@ ClientExpress.Response = (function(request, server) {
     template = views + template;
 
     if (template.lastIndexOf(".") != -1 && template.lastIndexOf(".") <= 4) {
-      ext = template.substring(template.lastIndexOf(".") - 1, template.length);
-      template = template.substring(0, template.lastIndexOf(".") - 1);
+      ext = template.substr(template.lastIndexOf(".") - 1, template.length);
+      template = template.substr(0, template.lastIndexOf(".") - 1);
     }
     var ext = ext || this.server.settings['view engine'] || "";
     
@@ -35,11 +35,7 @@ ClientExpress.Response = (function(request, server) {
   };
   
   Response.prototype.redirect = function(path) {
-    this.redirect_path = this.request.base_path + path;
-  };
-  
-  Response.prototype.contentType = function(content_type) {
-    
+    this.redirect_path = (path.substr(0, 1) == "/" ? this.request.base_path : '') + path;
   };
   
   Response.prototype.process = function() {
