@@ -8,9 +8,12 @@ task :bundle do
   Bundler.bundle!
 end
 
-desc 'Boot test server - run tests at http://localhost:8003/'
 task :test do
   exec 'nodemon run-tests.js'
+end
+
+task :run do
+  sh "nodemon example/server.js"
 end
 
 desc 'Generate the documentation'

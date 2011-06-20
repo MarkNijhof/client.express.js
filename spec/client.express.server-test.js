@@ -53,11 +53,11 @@ var spec = describe("client.express.server", function () {
     
     assertThat(route).typeOf('object');
     assertThat(route.path).equals('/path/:id/something/:else?');
-    assertThat(route.params.length).equals(2);
-    assertThat(route.params[0].name).equals('id');
-    assertThat(route.params[0].optional).isFalse();
-    assertThat(route.params[1].name).equals('else');
-    assertThat(route.params[1].optional).isTrue();
+    assertThat(route.keys.length).equals(2);
+    assertThat(route.keys[0].name).equals('id');
+    assertThat(route.keys[0].optional).isFalse();
+    assertThat(route.keys[1].name).equals('else');
+    assertThat(route.keys[1].optional).isTrue();
   });
 
   should("accept a post route configuration", function () {
