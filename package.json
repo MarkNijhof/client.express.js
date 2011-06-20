@@ -3,7 +3,7 @@
     "version": "0.0.1",
     "dependencies": {
       "express": "2.2.0",
-      "ejs": "0.4.2",
+      "ejs": "0.4.2"
     },
     "description": "client.express.js is an implementation of the express.js API but intended to run on the client",
     "homepage": "http://cre8ivethought.com/",
