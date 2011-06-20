@@ -22,7 +22,7 @@ ClientExpress.EventListener = (function(server) {
           title: element.title || '',
           session: server.session,
           delegateToServer: function () {
-            if (element.href.substr(0, 4) == 'http') {
+            if (element.href.indexOf("://") != -1) {
               window.location = element.href;
               return;
             }
