@@ -10,6 +10,6 @@
 
   You will need to have Node.js installed then just execute:
   
-  $ node express/server.js
+  $ node example/server.js
   
   
