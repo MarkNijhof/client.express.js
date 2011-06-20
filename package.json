@@ -2,8 +2,11 @@
     "name": "client.express.js",
     "version": "0.0.1",
     "dependencies": {
+      "express": "2.2.0",
+      "ejs": "0.4.2",
       "buster": "0.1.0",
-      "glob": "2.0.6"
+      "glob": "2.0.6",
+      "tobi": "0.2.1"
     },
     "description": "client.express.js is a copy of the express.js API.",
     "homepage": "http://cre8ivethought.com/",

@@ -53,11 +53,11 @@ var spec = describe("client.express.server", function () {
     
     assertThat(route).typeOf('object');
     assertThat(route.path).equals('/path/:id/something/:else?');
-    assertThat(route.keys.length).equals(2);
-    assertThat(route.keys[0].name).equals('id');
-    assertThat(route.keys[0].optional).isFalse();
-    assertThat(route.keys[1].name).equals('else');
-    assertThat(route.keys[1].optional).isTrue();
+    assertThat(route.params.length).equals(2);
+    assertThat(route.params[0].name).equals('id');
+    assertThat(route.params[0].optional).isFalse();
+    assertThat(route.params[1].name).equals('else');
+    assertThat(route.params[1].optional).isTrue();
   });
 
   should("accept a post route configuration", function () {
@@ -133,17 +133,6 @@ var spec = describe("client.express.server", function () {
     assertThat(server.router.match('get', '/path/mark/something').action()).equals('/path/:id/something/:else?');
     assertThat(server.router.match('get', '/path/mark/something/').action()).equals('/path/:id/something/:else?');
     assertThat(server.router.match('get', '/path/mark/something/nijhof').action()).equals('/path/:id/something/:else?');
-  });
-
-  should("be able to start listening", function () {
-    var server = new ClientExpress.Server();
-    
-    server
-      .get('/path', function(request, response) { return '/path'; })
-      .get('/path/:id?', function(request, response) { return '/path/:id?'; })
-      .get('/path/:id/something/:else?', function(request, response) { return '/path/:id/something/:else?'; });
-      
-    server.listen();
   });
 
   should("be able to combine different client.express servers", function () {

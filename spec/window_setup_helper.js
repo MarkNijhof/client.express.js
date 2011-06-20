@@ -5,7 +5,8 @@ exports.setup = function() {
       global.window = { 
         history: {
           pushState: function() {}
-        }
+        },
+        event: function() {}
       };
     },
 
@@ -17,14 +18,16 @@ exports.setup = function() {
       global.window = { 
         history: {
           pushState: undefined
-        }
+        },
+        event: function() {}
       };
     },
     
     setup_document: function() {
       global.document = {
         getElementsByTagName: function() { return []; },
-        forms: []
+        forms: [],
+        childNodes: [null, null]
       };
     },
     

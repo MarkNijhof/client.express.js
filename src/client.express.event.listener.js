@@ -19,7 +19,7 @@ ClientExpress.EventListener = (function(server) {
         var request = new ClientExpress.Request({
           method: 'get',
           fullPath: element.href,
-          title: element.title,
+          title: element.title || '',
           session: server.session,
           delegateToServer: function () {
             window.location.pathname = element.href;

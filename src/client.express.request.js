@@ -4,8 +4,9 @@ ClientExpress.Request = (function(raw_data) {
   var Request = function(raw_data) {
     var self = this;
     this.session = raw_data.session;
-    this.params = {};
+    this.body = {};
     this.title = raw_data.title;
+    this.params;
     this.queryString = raw_data.fullPath.split("?")[1];
 
     if (this.queryString) {
@@ -18,18 +19,23 @@ ClientExpress.Request = (function(raw_data) {
         if (nested = nestedParamRegex.exec(paramName)) {
           var paramParent = nested[1];
           var paramName = nested[2];
-          var parentParams = self.params[paramParent] || {};
+          var parentParams = self.body[paramParent] || {};
           parentParams[paramName] = paramValue;
-          self.params[paramParent] = parentParams;
+          self.body[paramParent] = parentParams;
         } else {
-          self.params[paramName] = paramValue;
+          self.body[paramName] = paramValue;
         };
       });
     };
 
-    this.method = (this.params._method || raw_data.method).toLowerCase();
+    this.method = (this.body._method || raw_data.method).toLowerCase();
     this.path = raw_data.fullPath.replace(/\?.+$/, "").replace(window.location.protocol + '//' + window.location.host, '');
     this.delegateToServer = raw_data.delegateToServer || function() {};
+  };
+  
+  Request.prototype.attachRoute = function(route) {
+    this.params = route.params;
+    this.base_path = route.base_path;
   };
     
   return Request;
