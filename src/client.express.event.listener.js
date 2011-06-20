@@ -22,6 +22,10 @@ ClientExpress.EventListener = (function(server) {
           title: element.title || '',
           session: server.session,
           delegateToServer: function () {
+            if (element.href.substr(0, 4) == 'http') {
+              window.location = element.href;
+              return;
+            }
             window.location.pathname = element.href;
           }
         });
