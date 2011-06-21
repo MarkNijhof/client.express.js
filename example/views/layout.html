@@ -2,6 +2,12 @@
 <html>
   <head>
     <title><%= title %></title>
+    <link href='/example/public/stylesheets/screen.css' media='screen, projection' rel='stylesheet' type='text/css'>
+    <link href='/example/public/stylesheets/print.css' media='print' rel='stylesheet' type='text/css'>
+    <!--[if lt IE 8]>
+      <link href='/example/public/stylesheets/ie.css' media='screen, projectio' rel='stylesheet' type='text/css'>
+    <![endif]-->
+    
     <script src='/lib/jquery-1.4.4.min.js' type='text/javascript'></script>
     <script src='/lib/ejs.min.js' type='text/javascript'></script>
 
@@ -18,14 +24,108 @@
 
     <script src='/example/client_session.js' type='text/javascript'></script>
     <script src='/example/client.js' type='text/javascript'></script>
+    
+    <link href='http://cre8ivethought.s3.amazonaws.com/images/favicon.png' rel='icon' type='image/png'>
+    <script type="text/javascript">
+      var scroll_top = 15;
+      var to_show_the_profile_picture = true;
+      var to_hide_the_profile_picture = false;
+
+      $(window).scroll(function () {  
+      	check_if_an_annimation_is_needed();
+      });
+
+      function check_if_an_annimation_is_needed(){
+      	if (is_currently_below_scroll_top()) {
+      		start_annimation(to_hide_the_profile_picture);
+      	} else {
+      		start_annimation(to_show_the_profile_picture);
+      	}
+      }
+
+      function start_annimation(should_the_profile_picture_be_shown){
+      	if (should_the_profile_picture_be_shown){
+      		$('#profile-picture').stop().animate({ width: 222 }, 1000);
+      	} else {
+      		$('#profile-picture').stop().animate({ width: 0 }, 300);
+      	}
+      }
+
+      function is_currently_below_scroll_top(){
+      	return $(window).scrollTop() >= scroll_top;
+      }
+
+      $(document).ready(function(){
+      	$('#footer').css('margin-bottom', $(window).height() - 550 + 'px');
+      });
+    </script>
+    
   </head>
   <body>
-    <p>
-      Current date time is: <script type='text/javascript'> document.write(Date()); </script>
-    
-    <div class='content' id='content'>
-      <%- body %>
-    </div>
+    <div id="container">
+      <div id="left-side">&nbsp;</div>
+      <div id="main-area">
+        <div id="header">
+          <nav>
+            <div id='menu'>
+              <ul>
+                <li><a href='/'>Home</a></li>
+                <li><a href='/guide'>Guide</a></li>
+                <li><a href='/applications'>Applications</a></li>
+                <li><a href='http://cre8ivethought.com/blog/index'>Cre8ive Thought</a></li>
+              </ul>
+            </div>
+          </nav>
 
+          <div id='profile-picture'></div>
+        </div>
+
+        <div id="content-wrapper">
+          <div id="content">
+            <%- body %>
+          </div>
+          </br>
+          </br>
+          <footer>
+            <section>
+              <a name='About'></a>
+              </br>
+              </br>
+              <div id='about'>
+                <h3>
+                  About me
+                </h3>
+                <div id='profile-picture-about'></div>
+                <p>
+                  Hi, my name is Mark Nijhof and I am using this space to express my own "creative" thoughts about software development and other things that interest me. If you have any questions then please don't hesitate to contact me:
+                  </br>
+                  </br>
+                  E-mail: Mark.Nijhof (@) Cre8iveThought.com
+                  </br>
+                  Phone: 0031 6 2383 0739
+                  </br>
+                  Twitter:
+                  <a href='http://twitter.com/MarkNijhof'>@MarkNijhof</a>
+                </p>
+              </div>
+            </section>
+            <br>
+            <br>            
+            <section>
+              <div id='license'>
+                <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>
+                  <img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/3.0/88x31.png' style='border-width: 0pt;'>
+                </a>
+
+                </br>
+                This work is licensed under a <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>Creative Commons Attribution 3.0 Unported License</a>.
+              </div>
+            </section>
+          </footer>
+        </div>
+        <div id='footer'></div>
+      </div>
+      <div id="left-side">&nbsp;</div>
+    </div>
   </body>
 </html>
