@@ -4,16 +4,5 @@
     "dependencies": {
       "express": "2.2.0",
       "ejs": "0.4.2"
-    },
-    "description": "client.express.js is an implementation of the express.js API but intended to run on the client",
-    "homepage": "http://cre8ivethought.com/",
-    "contributors": [{
-        "name": "Mark Nijhof",
-        "email": "mark.nijhof@cre8ivethought.com",
-        "url": "http://cre8ivethought.com"
-    }],
-    "repository": {
-        "type": "git",
-        "url": "git://github.com/MarkNijhof/client.express.js.git"
     }
 }
