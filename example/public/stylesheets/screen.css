@@ -1,0 +1,57 @@
+html, body { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+
+html { font-size: 100.01%; }
+
+div, span, object, iframe, h1, h2, h3, h4, h5, h6, p, pre, a, abbr, acronym, address, code, del, dfn, em, img, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, caption, tbody, tfoot, thead, tr { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; }
+
+blockquote, q { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; quotes: "" ""; }
+blockquote:before, blockquote:after, q:before, q:after { content: ""; }
+
+th, td, caption { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; text-align: left; font-weight: normal; vertical-align: middle; }
+
+table { margin: 0; padding: 0; border: 0; font-weight: inherit; font-style: inherit; font-size: 100%; font-family: inherit; vertical-align: baseline; border-collapse: separate; border-spacing: 0; vertical-align: middle; }
+
+a img { border: none; }
+
+
+body { color: #222222; font-family: "Georgia","Lucida Grande",Helvetica,Arial,Verdana,sans-serif; font-size: 1.1em; line-height: 1.6; background: #24130b; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/background.jpg"); background-position: 0 0; background-attachment: fixed; }
+body #container { width: 960px; margin: 0 auto; overflow: hidden; *zoom: 1; }
+body #container a { color: gray; text-decoration: none; }
+body #container a:hover { color: #2a1911; text-decoration: underline; }
+body #container h1 { color: #3c2f26; margin: 0; padding-bottom: 20px; font-weight: 600; font-size: 1.8em; }
+body #container h1 a { color: #2a1911; text-decoration: none; }
+body #container h1 a:hover { color: #2a1911; text-decoration: none; }
+body #container h2 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.4em; text-align: right; }
+body #container h3 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.2em; text-align: right; }
+body #container h4 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.1em; text-align: right; }
+body #container P { text-align: justify; font-size: 1.2em; padding: 0px 30px 0px 20px; }
+body #container .gist { line-height: 1.2em; }
+body #container .date_list { font-style: italic; float: right; margin-right: 30px; color: #bbbbbb; }
+body #container .date_post { position: relative; font-style: italic; float: left; top: -15px; left: 3px; width: 550px; color: #bbbbbb; margin: 0px; }
+body #container .archive_info { position: relative; top: -10px; font-style: italic; font-size: 75%; color: #bbbbbb; }
+body #container .comments_link { color: #bbbbbb; text-decoration: none; }
+body #container .comments_link:hover { color: #bbbbbb; text-decoration: underline; }
+body #left-side { display: inline; float: left; margin-right: 10px; width: 70.833px; }
+* html body #left-side { overflow-x: hidden; }
+body #main-area { display: inline; float: left; margin-right: 10px; width: 798.333px; }
+* html body #main-area { overflow-x: hidden; }
+body #content-wrapper { padding: 325px 50px 10px 40px; background-color: #edeae1; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/middle-frame-front.png"); position: relative; }
+body #footer { height: 10px; background: #edeae1; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/frame-bottom.png"); background-position: -2px top; margin-left: 2px; margin-bottom: 1000px; }
+body #license { text-align: left; font-style: italic; font-size: 18px; color: #888; padding: 0px 30px 10px 30px; margin: 0px -30px 0px -20px; }
+body #right-side { display: inline; float: left; margin-right: 0; width: 70.833px; }
+* html body #right-side { overflow-x: hidden; }
+
+#generated-message { position: relative; top: 14px; float: right;}
+
+#about p { width: 500px; margin: 0px -30px 0px -20px; }
+
+#profile-picture { background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/profile-picture.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
+
+#profile-picture-about { background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/profile-picture-about.png"); background-position: left bottom; top: 15px; left: 42px; width: 222px; height: 260px; position: relative; z-index: 300; float: right; }
+
+#header { position: fixed; margin: 0 auto; width: 800px; height: 80px; z-index: 400; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/frame-top.png"); background-repeat: none; }
+
+#menu { border: 0 none; display: inline-block; float: right; margin: 15px 0px 0px 0px; outline: 0 none; overflow: hidden; padding: 0; position: relative; z-index: 500; height: 60px; }
+#menu ul { position: relative; list-style-type: disc; }
+#menu ul, #menu ol { margin: 0 1.5em 1.5em 0; padding-left: 3.333em; }
+#menu li { display: inline; float: left; list-style-image: none; list-style-type: none; margin-left: 0; padding-top: 10px; padding-left: 10px; padding-right: 10px; white-space: nowrap; }
