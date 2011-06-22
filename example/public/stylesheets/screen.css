@@ -35,7 +35,7 @@ body #left-side { display: inline; float: left; margin-right: 10px; width: 70.83
 * html body #left-side { overflow-x: hidden; }
 body #main-area { display: inline; float: left; margin-right: 10px; width: 798.333px; }
 * html body #main-area { overflow-x: hidden; }
-body #content-wrapper { padding: 325px 50px 10px 40px; background-color: #edeae1; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/middle-frame-front.png"); position: relative; }
+body #content-wrapper { padding: 175px 50px 10px 40px; background-color: #edeae1; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/middle-frame-front.png"); position: relative; }
 body #footer { height: 10px; background: #edeae1; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/frame-bottom.png"); background-position: -2px top; margin-left: 2px; margin-bottom: 1000px; }
 body #license { text-align: left; font-style: italic; font-size: 18px; color: #888; padding: 0px 30px 10px 30px; margin: 0px -30px 0px -20px; }
 body #right-side { display: inline; float: left; margin-right: 0; width: 70.833px; }
@@ -45,7 +45,7 @@ body #right-side { display: inline; float: left; margin-right: 0; width: 70.833p
 
 #about p { width: 500px; margin: 0px -30px 0px -20px; }
 
-#profile-picture { background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/profile-picture.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
+#profile-picture { background-image: url("/example//public/images/layout/clientexpressjs-logo.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
 
 #profile-picture-about { background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/profile-picture-about.png"); background-position: left bottom; top: 15px; left: 42px; width: 222px; height: 260px; position: relative; z-index: 300; float: right; }
 
