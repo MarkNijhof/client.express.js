@@ -1,27 +1,18 @@
-var template_engine = {
-  compile: function(template_url, args) {
-    var template_html;
-    $.ajax({ 
-      type: "GET",
-      url: template_url,   
-      async: false,
-      success : function(text) {
-         template_html = text;
-      }
-    });
-    return require("ejs").render(template_html, { locals: args });
-  }
-};
 
 var server = ClientExpress.createServer();
 
 server.configure(function() {
-  server.use(server.logger());
   server.use(server.content_target_area("content"));
   server.set('views', '/example/views/');
   server.set('view engine', 'html');
   server.register('.html', template_engine);
 });
+
+server.configure('development', function() {
+  server.use(server.logger());
+});
+
+server.enable('development');
 
 server.use('/session', ClientExpress.sessionServer());
 
@@ -52,3 +43,18 @@ server.get('/person/first_name/:first_name/last_name/:last_name', function(reque
 });
 
 server.listen();
+
+var template_engine = {
+  compile: function(template_url, args) {
+    var template_html;
+    $.ajax({ 
+      type: "GET",
+      url: template_url,   
+      async: false,
+      success : function(text) {
+         template_html = text;
+      }
+    });
+    return require("ejs").render(template_html, { locals: args });
+  }
+};
