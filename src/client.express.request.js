@@ -3,6 +3,7 @@ ClientExpress.Request = (function(raw_data) {
   
   var Request = function(raw_data) {
     var self = this;
+    this.isHistoryRequest = false;
     this.session = raw_data.session;
     this.body = {};
     this.title = raw_data.title;
@@ -37,6 +38,14 @@ ClientExpress.Request = (function(raw_data) {
     this.params = route.params;
     this.base_path = route.base_path;
   };
+  
+  Request.prototype.location = function () {
+    return (this.method === 'get') ? this.path : ''
+  }
+  
+  Request.prototype.HistoryRequest = function () {
+    this.isHistoryRequest = true;
+  }
     
   return Request;
 

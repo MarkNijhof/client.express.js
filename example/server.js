@@ -25,11 +25,15 @@ configure_server(server);
 server.use('/session', require(__dirname + '/server_session').sessionServer());
 
 server.get('/', function(request, response) {
-  response.render('home', {title: 'client.express.js - server', source: 'server' });
+  response.render('home', { title: 'client.express.js - home', source: 'server' });
 });
 
-server.get('/contact', function(request, response) {
-  response.render('contact', {title: 'client.express.js - server', source: 'server' });
+server.get('/guide', function(request, response) {
+  response.render('guide', { title: 'client.express.js - guide', source: 'server' });
+});
+
+server.get('/applications', function(request, response) {
+  response.render('applications', { title: 'client.express.js - applications', source: 'server' });
 });
 
 server.get('/person/:person_name', function(request, response) {

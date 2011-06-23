@@ -60,12 +60,16 @@ ClientExpress.EventListener = (function(server) {
     };
   };
 
+  var firstPop = true;
   var setup_onpopstate_event_handler = function(server) {
-    // if (window.addEventListener) {
-    //   window.addEventListener('popstate', onPopStateHandler, false);
-    // } else if (window.attachEvent) {
-    //   window.attachEvent('onpopstate', onPopStateHandler);
-    // }
+    window.onpopstate = function(event) {
+      if (event.state) {
+        var request = event.state
+        request.__proto__ = ClientExpress.Request.prototype
+        request.HistoryRequest();
+        server.processRequest(request);
+      }
+    };
   };
   
   return EventListener;  

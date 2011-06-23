@@ -26,12 +26,18 @@ configure_server(server);
 server.use('/session', ClientExpress.sessionServer());
 
 server.get('/', function(request, response) {
-  response.render('home', { title: 'client.express.js - client', source: 'client' });
+  response.render('home', { title: 'client.express.js - home', source: 'client' });
 });
 
-server.get('/contact', function(request, response) {
-  response.render('contact', { title: 'client.express.js - client', source: 'client' });
+server.get('/guide', function(request, response) {
+  response.render('guide', { title: 'client.express.js - guide', source: 'client' });
 });
+
+server.get('/applications', function(request, response) {
+  response.render('applications', { title: 'client.express.js - applications', source: 'client' });
+});
+
+
 
 server.get('/person/:person_name', function(request, response) {
   response.render('person', { title: 'client.express.js - client', source: 'client', person_name: request.params.person_name });

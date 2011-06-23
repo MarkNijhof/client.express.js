@@ -123,17 +123,45 @@ ClientExpress.Server = (function() {
     var server = this;
     request.attachRoute(route);
     var response = new ClientExpress.Response(request, server);
+    if (!request.isHistoryRequest) {
+      server.pushState(request);
+    }
     route.action(request, response);
     response.process();
   };
+  
+  Server.prototype.pushState = function(request) {
+    history.pushState(request, request.title, request.location());
+  };
+  
+  Server.prototype.replaceState = function(request) {
+    history.replaceState(request, request.title, request.location());
+  };
 
   Server.prototype.listen = function() { 
+    if (!ClientExpress.supported()) {
+      server.log.information("Not supported on this browser");
+      return;
+    }
+    
     var server = this;
     ClientExpress.onDomReady(function() {
       ClientExpress.utils.forEach(server.setup_functions, function(setup_function) {
         setup_function.call();
       });
       server.eventListener.registerEventHandlers(server); 
+      
+      var request = new ClientExpress.Request({
+        method: 'get',
+        fullPath: window.location.pathname,
+        title: document.title,
+        session: server.session,
+        delegateToServer: function () {
+          window.location.pathname = window.location.pathname;
+        }
+      });
+      server.replaceState(request);
+      
       server.log.information("Listening");
     });
   };  
