@@ -1,14 +1,16 @@
-var template_engine = function(template_url, args) {
-  var template_html;
-  $.ajax({ 
-    type: "GET",
-    url: template_url,   
-    async: false,
-    success : function(text) {
-       template_html = text;
-    }
-  });
-  return require("ejs").render(template_html, { locals: args });
+var template_engine = {
+  compile: function(template_url, args) {
+    var template_html;
+    $.ajax({ 
+      type: "GET",
+      url: template_url,   
+      async: false,
+      success : function(text) {
+         template_html = text;
+      }
+    });
+    return require("ejs").render(template_html, { locals: args });
+  }
 };
 
 var configure_server = function(_server) {

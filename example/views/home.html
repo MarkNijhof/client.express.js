@@ -1,6 +1,50 @@
 
 <div id="generated-message">( generated on the <b>"<%= source %>"</b> )</div>
-<h1>client.express.js</h1>
+
+<h1>Client Express</h1>
 
 <p>
-  ...
+  This is a JavaScript library that helps in progressively enhancing websites. It is relying on pushState, replaceState, onPopState and plain JavaScript to give the user the impression a request is handled on the server, when infect the request is handled on the client itself. The library is a client side implementation of the <a href="http://expressjs.com/">Express *</a> API. The goal here is to promote re-use of the routing and templating logic from the server on the client. 
+</p>
+<p>
+  * Express is a high performance, high class web development framework for <a href="http://nodejs.org/">Node.js</a>.
+</p>
+<p>
+  This website has been created using Node.js and Express on the server and Client Express on the client. Each page will show where the main content was generated. You may also want to open FireBug which will show you the log output which will show what route was triggered.
+</p>
+
+<h2>For example</h2>
+<p>
+  When we look at a simple Express configuration, and then take a look at the same configuration for Client Express them you may notice a striking similarity between the two.
+</p>
+
+Express configuration:
+<pre>
+  var server = express.createServer();
+
+  server.get('/', function(request, response) {
+    response.send('hello world');
+  });
+
+  server.listen(3000);
+</pre>
+
+Client Express configuration:
+<pre>
+  var server = ClientExpress.createServer();
+
+  server.get('/', function(request, response) {
+    response.send('hello world');
+  });
+
+  server.listen();
+</pre>
+
+<h2>Source code</h2>
+<p>
+  The source code of the Client Express library as well as the source code for this website can be found on GitHub please use it and provide feedback.
+</p>
+<p>
+  GitHub: <a href="https://github.com/MarkNijhof/client.express.js">https://github.com/MarkNijhof/client.express.js</a>
+</p>
+

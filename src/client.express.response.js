@@ -31,7 +31,7 @@ ClientExpress.Response = (function(request, server) {
     
     var templateEngine = this.server.templateEngines[ext];
     
-    this.send(templateEngine(template, args));
+    this.send(templateEngine.compile(template, args));
   };
   
   Response.prototype.redirect = function(path) {

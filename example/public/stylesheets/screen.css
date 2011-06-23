@@ -24,7 +24,7 @@ body #container h1 a:hover { color: #2a1911; text-decoration: none; }
 body #container h2 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.4em; text-align: right; }
 body #container h3 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.2em; text-align: right; }
 body #container h4 { color: #3c2f26; display: inline; margin: 0; padding-bottom: 10px; font-weight: 600; font-size: 1.1em; text-align: right; }
-body #container P { text-align: justify; font-size: 1.2em; padding: 0px 30px 0px 20px; }
+body #container P { text-align: justify; font-size: 1.2em; padding: 0px 30px 20px 20px; }
 body #container .gist { line-height: 1.2em; }
 body #container .date_list { font-style: italic; float: right; margin-right: 30px; color: #bbbbbb; }
 body #container .date_post { position: relative; font-style: italic; float: left; top: -15px; left: 3px; width: 550px; color: #bbbbbb; margin: 0px; }
@@ -43,11 +43,7 @@ body #right-side { display: inline; float: left; margin-right: 0; width: 70.833p
 
 #generated-message { position: relative; top: 14px; float: right;}
 
-#about p { width: 500px; margin: 0px -30px 0px -20px; }
-
 #profile-picture { background-image: url("/example//public/images/layout/clientexpressjs-logo.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
-
-#profile-picture-about { background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/profile-picture-about.png"); background-position: left bottom; top: 15px; left: 42px; width: 222px; height: 260px; position: relative; z-index: 300; float: right; }
 
 #header { position: fixed; margin: 0 auto; width: 800px; height: 80px; z-index: 400; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/frame-top.png"); background-repeat: none; }
 
@@ -55,3 +51,12 @@ body #right-side { display: inline; float: left; margin-right: 0; width: 70.833p
 #menu ul { position: relative; list-style-type: disc; }
 #menu ul, #menu ol { margin: 0 1.5em 1.5em 0; padding-left: 3.333em; }
 #menu li { display: inline; float: left; list-style-image: none; list-style-type: none; margin-left: 0; padding-top: 10px; padding-left: 10px; padding-right: 10px; white-space: nowrap; }
+
+pre {
+  border: 1px solid #3c2f26;
+  background-color: lightgray;
+  line-height: 1.0;
+  padding: 10px;
+  margin-bottom: 20px;
+  font-family: "Helvetica Neue", "Lucida Grande", "Arial"; 
+}
