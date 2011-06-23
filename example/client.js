@@ -13,17 +13,15 @@ var template_engine = {
   }
 };
 
-var configure_server = function(_server) {
-  _server.use(_server.logger());
-  _server.use(_server.content_target_area("content"));
-  _server.set('views', '/example/views/');
-  _server.set('view engine', 'html');
-  _server.register('.html', template_engine);
-}
-
 var server = ClientExpress.createServer();
 
-configure_server(server);
+server.configure(function() {
+  server.use(server.logger());
+  server.use(server.content_target_area("content"));
+  server.set('views', '/example/views/');
+  server.set('view engine', 'html');
+  server.register('.html', template_engine);
+});
 
 server.use('/session', ClientExpress.sessionServer());
 
@@ -37,6 +35,10 @@ server.get('/guide', function(request, response) {
 
 server.get('/applications', function(request, response) {
   response.render('applications', { title: 'client.express.js - applications', source: 'client' });
+});
+
+server.get('/examples', function(request, response) {
+  response.render('examples', { title: 'client.express.js - examples', source: 'client' });
 });
 
 

@@ -42,6 +42,7 @@ body #right-side { display: inline; float: left; margin-right: 0; width: 70.833p
 * html body #right-side { overflow-x: hidden; }
 
 #generated-message { position: relative; top: 14px; float: right;}
+.not-implemented-message { position: relative; top: 8px; float: right; color: red;}
 
 #profile-picture { background-image: url("/example//public/images/layout/clientexpressjs-logo.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
 
@@ -60,3 +61,6 @@ pre {
   margin-bottom: 20px;
   font-family: "Helvetica Neue", "Lucida Grande", "Arial"; 
 }
+
+em { color: blue; }
+ul { margin-left: 35px; }

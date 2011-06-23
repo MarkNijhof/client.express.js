@@ -20,24 +20,24 @@
 
 Express configuration:
 <pre>
-  var server = express.createServer();
+var server = express.createServer();
 
-  server.get('/', function(request, response) {
-    response.send('hello world');
-  });
+server.get('/', function(request, response) {
+  response.send('hello world');
+});
 
-  server.listen(3000);
+server.listen(3000);
 </pre>
 
 Client Express configuration:
 <pre>
-  var server = ClientExpress.createServer();
+var server = ClientExpress.createServer();
 
-  server.get('/', function(request, response) {
-    response.send('hello world');
-  });
+server.get('/', function(request, response) {
+  response.send('hello world');
+});
 
-  server.listen();
+server.listen();
 </pre>
 
 <h2>Source code</h2>
