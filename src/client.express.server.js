@@ -41,15 +41,23 @@ ClientExpress.Server = (function() {
     };
   };
   
-  Server.prototype.configure = function(configure_function) {
-    this.setup_functions.push(configure_function);
-  }
+  Server.prototype.configure = function(environment, configure_function) {
+    if (typeof environment == 'function') {
+      this.setup_functions.push(environment);
+      return;
+    }
+    this.setup_functions.push(function() {
+      if (server.enabled(environment)) {
+        configure_function.call();
+      }
+    });    
+  };
    
   Server.prototype.use = function(path, other_server) {
     var that = this;
     
     if (typeof path == 'function') {
-      this.setup_functions.push(path);
+      path.call();
       return;
     }
     
@@ -84,6 +92,30 @@ ClientExpress.Server = (function() {
       return this;
     }
   };
+  
+  Server.prototype.enable = function(setting) {
+    if (this.settings.hasOwnProperty(setting)) {
+      this.settings[setting] = true;
+    } else {
+      this.settings[setting] = true;
+    }
+  }
+  
+  Server.prototype.disable = function(setting) {
+    if (this.settings.hasOwnProperty(setting)) {
+      this.settings[setting] = false;
+    } else {
+      this.settings[setting] = false;
+    }
+  }
+  
+  Server.prototype.enabled = function(setting) {
+    return this.settings.hasOwnProperty(setting) && this.settings[setting];
+  }
+  
+  Server.prototype.disabled = function(setting) {
+    return this.settings.hasOwnProperty(setting) && !this.settings[setting];
+  }
   
   Server.prototype.register = function(ext, template_engine){
     if (template_engine === undefined) {
