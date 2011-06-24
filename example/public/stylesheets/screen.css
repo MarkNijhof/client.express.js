@@ -41,10 +41,11 @@ body #license { text-align: left; font-style: italic; font-size: 18px; color: #8
 body #right-side { display: inline; float: left; margin-right: 0; width: 70.833px; }
 * html body #right-side { overflow-x: hidden; }
 
-#generated-message { position: relative; top: 14px; float: right;}
+#generated-message-wrapper { position: fixed; top: 25px; z-index: 700; }
+#generated-message { position: relative; }
 .not-implemented-message { position: relative; top: 8px; float: right; color: red;}
 
-#profile-picture { background-image: url("/example//public/images/layout/clientexpressjs-logo.png"); background-position: right bottom; top: 20px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
+#profile-picture { background-image: url("/example//public/images/layout/clientexpressjs-logo.png"); background-position: right bottom; top: 45px; left: 10px; width: 222px; height: 260px; position: absolute; z-index: 600; }
 
 #header { position: fixed; margin: 0 auto; width: 800px; height: 80px; z-index: 400; background-image: url("http://cre8ivethought.s3.amazonaws.com/images/layout/frame-top.png"); background-repeat: none; }
 
@@ -59,7 +60,24 @@ pre {
   line-height: 1.0;
   padding: 10px;
   margin-bottom: 20px;
+  font-family: "courier"; 
+  font-size: 12px;
+}
+
+.box {
+  position: relative;
+  border: 1px solid #3c2f26;
+  background-color: lightblue;
+  padding: 10px;
+  margin-bottom: 20px;
+  height: auto;
   font-family: "Helvetica Neue", "Lucida Grande", "Arial"; 
+}
+
+.box .text {
+  line-height: 1.0;
+  font-size: 1.0em;
+  padding-bottom: 10px;
 }
 
 em { color: blue; }

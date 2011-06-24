@@ -14,7 +14,7 @@ server.configure('development', function() {
 
 server.enable('development');
 
-server.use('/examples', ClientExpress.formAndSessionServer());
+server.use('/examples/processing_url_and_post_parameters', ClientExpress.processingUrlAndPostParameters());
 
 server.get('/', function(request, response) {
   response.render('home', { title: 'client.express.js - home', source: 'client' });

@@ -1,0 +1,99 @@
+
+<div id="generated-message-wrapper"><div id="generated-message">( generated on the <b>"<%= source %>"</b> )</div></div>
+<h1>Processing URL and POST parameters</h1>
+
+<p>
+  This example will demonstrate how to process URL parameters and POST parameters as well as some redirect and rendering logic.
+</p>
+<div class="box">
+  <div class="text">
+    The form below here are the values that have been stored in the <em>request.session</em>. If nothing is set it is replaced by "not set" by the controller.
+  </div>  
+  <div style="float: left; margin: 3px 10px 0px 0px; position: relative;">
+    First name:</br>
+    Last name:
+  </div>
+  <div style="margin: 2px 0px 0px 0px; position: relative;">
+    <b><%= person.first_name %></b></br>
+    <b><%= person.last_name %></b>
+  </div>
+</div>  
+
+<div class="box">
+  <div class="text">
+    You can navigate back to the form to try some other variables.
+    </br>
+    </br>
+    <a href="/examples/processing_url_and_post_parameters">/examples/processing_url_and_post_parameters</a></br>
+  </div>  
+</div>  
+
+<div class="box">
+  <div class="text">
+    You may also shortcut the process by triggering the second defined <em>GET</em> request directly, for example:
+    </br>
+    </br>
+    <a href="/examples/processing_url_and_post_parameters/person/Mark/Nijhof">/examples/processing_url_and_post_parameters/person/Mark/Nijhof</a></br>
+    <a href="/examples/processing_url_and_post_parameters/person/Mona/Nijhof">/examples/processing_url_and_post_parameters/person/Mona/Nijhof</a></br>
+  </div>  
+</div>  
+
+<p>
+  Then below here we have the Client Express configuration:
+</p>
+
+<pre>
+ClientExpress.processingUrlAndPostParameters = function() {
+  var server = ClientExpress.createServer();
+
+  server.get('/', function(request, response) {
+    response.render('processing_url_and_post_parameters/form', 
+                    {title: 'client.express.js - client', source: 'client' });
+  });
+
+  server.post('/', function(request, response) {
+    var person = request.body.person;
+    response.redirect('/person/' + person.first_name + '/' + person.last_name);
+  });
+
+  server.get('/person/:first_name/:last_name', function(request, response) {
+    request.session.person = {
+      first_name: request.params.first_name,
+      last_name: request.params.last_name
+    };
+    response.redirect('/output');
+  });
+
+  server.get('/output', function(request, response) {
+    var person = request.session.person || {
+      first_name: 'not set',
+      last_name: 'not set'
+    };
+    response.render('processing_url_and_post_parameters/output', 
+                    {title: 'client.express.js - client', source: 'client', person: person });
+  });
+
+  return server;
+};
+</pre>
+
+<p>
+  Which will result in the following routes being loaded:
+</p>
+
+<pre>
+  Route loaded: GET  /examples/processing_url_and_post_parameters
+  Route loaded: GET  /examples/processing_url_and_post_parameters/person/:first_name/:last_name
+  Route loaded: GET  /examples/processing_url_and_post_parameters/output
+  Route loaded: POST /examples/processing_url_and_post_parameters
+</pre>
+
+<p>
+  The reason why the route is different from how this Client Express server is configured is because it is mounted in a different Client Express server with a different base path.
+</p>
+
+<pre>
+server.use('/examples/processing_url_and_post_parameters', 
+           ClientExpress.processingUrlAndPostParameters());
+</pre>
+
