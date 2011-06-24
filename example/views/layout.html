@@ -31,22 +31,27 @@
       var to_show_the_profile_picture = true;
       var to_hide_the_profile_picture = false;
 
-      var isAnnimation = false;
       $(window).scroll(function () {
       	annimate();
       });
       
       var isHiding = false;
-      var isHidden = false;
       var isShowing = false;
-      var isShown = true;
+      var visible = true;
       
       var annimate = function() {
-        if (is_currently_below_scroll_top() && !isHiding && isShown) {
+        if (is_currently_below_scroll_top() && isHiding) {
+          return;
+        }
+        if (!is_currently_below_scroll_top() && isShowing) {
+          return;
+        }
+        
+        if (is_currently_below_scroll_top() && visible) {
           hide_logo();
           return;
         }
-        if (!is_currently_below_scroll_top() && !isShowing && isHidden) {
+        if (!is_currently_below_scroll_top() && !visible) {
           show_logo();
           return;
         }
@@ -61,8 +66,7 @@
     		$('#profile-picture').stop().animate({ width: 0 }, 200, function() { 
     		  isHiding = false; 
     		  isShowing = false; 
-    		  isHidden = true; 
-    		  isShown = false; 
+    		  visible = false; 
     		});
       };
 
@@ -71,8 +75,7 @@
     		$('#profile-picture').stop().animate({ width: 222 }, 1000, function() { 
     		  isHiding = false; 
     		  isShowing = false; 
-    		  isHidden = false; 
-    		  isShown = true; 
+    		  visible = true; 
     		});
       };
 
