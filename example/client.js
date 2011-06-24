@@ -32,16 +32,6 @@ server.get('/examples', function(request, response) {
   response.render('examples', { title: 'client.express.js - examples', source: 'client' });
 });
 
-
-
-server.get('/person/:person_name', function(request, response) {
-  response.render('person', { title: 'client.express.js - client', source: 'client', person_name: request.params.person_name });
-});
-
-server.get('/person/first_name/:first_name/last_name/:last_name', function(request, response) {
-  response.render('person', { title: 'client.express.js - client', source: 'client', person_name: request.params.first_name + ' ' + request.params.last_name });
-});
-
 server.listen();
 
 var template_engine = {

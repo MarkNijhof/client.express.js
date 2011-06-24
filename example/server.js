@@ -40,14 +40,6 @@ server.get('/examples', function(request, response) {
   response.render('examples', { title: 'client.express.js - examples', source: 'server' });
 });
 
-server.get('/person/:person_name', function(request, response) {
-  response.render('person', {title: 'client.express.js - server', source: 'server', person_name: request.params.person_name });
-});
-
-server.get('/person/first_name/:first_name/last_name/:last_name', function(request, response) {
-  response.render('person', {title: 'client.express.js - server', source: 'server', person_name: request.params.first_name + ' ' + request.params.last_name });
-});
-
 var port = process.env.PORT || 3000;
 console.log("Listening on " + port);
 server.listen(port);
