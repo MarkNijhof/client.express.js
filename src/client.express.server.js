@@ -65,18 +65,28 @@ ClientExpress.Server = (function() {
       path = path.substring(0, path.length-1);
     }
     
+    var join_routes = function(base_path, route) {
+      if (route == '/') {
+        return base_path;
+      }
+      if (route.substr(0, 1) != '/') {
+        return base_path + '/' + route;
+      }
+      return base_path + route;
+    };
+    
     var routes = other_server.router.routes;
     ClientExpress.utils.forEach(routes.get, function(other_route) {
-      add_route(that, other_route.method, path + other_route.path, other_route.action, path);
+      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.post, function(other_route) {
-      add_route(that, other_route.method, path + other_route.path, other_route.action, path);
+      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.put, function(other_route) {
-      add_route(that, other_route.method, path + other_route.path, other_route.action, path);
+      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.del, function(other_route) {
-      add_route(that, other_route.method, path + other_route.path, other_route.action, path);
+      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
   };
   
@@ -155,8 +165,8 @@ ClientExpress.Server = (function() {
     var server = this;
     request.attachRoute(route);
     var response = new ClientExpress.Response(request, server);
-    if (!request.isHistoryRequest) {
-      server.pushState(request);
+    if (!request.isHistoryRequest && !request.isRedirect) {
+        server.pushState(request);
     }
     route.action(request, response);
     response.process();
@@ -195,6 +205,20 @@ ClientExpress.Server = (function() {
       server.replaceState(request);
       
       server.log.information("Listening");
+      var routes = server.router.routes;
+      ClientExpress.utils.forEach(routes.get, function(route) {
+        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+      });
+      ClientExpress.utils.forEach(routes.post, function(route) {
+        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+      });
+      ClientExpress.utils.forEach(routes.put, function(route) {
+        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+      });
+      ClientExpress.utils.forEach(routes.del, function(route) {
+        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+      });
+      
     });
   };  
   

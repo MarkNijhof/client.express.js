@@ -46,6 +46,7 @@ ClientExpress.Response = (function(request, server) {
         method: 'get',
         fullPath: that.redirect_path,
         title: '',
+        isRedirect: true,
         session: that.server.session,
         delegateToServer: function () {
           window.location.pathname = that.redirect_path;
