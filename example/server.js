@@ -22,7 +22,7 @@ var server = express.createServer();
 
 configure_server(server);
 
-server.use('/session', require(__dirname + '/server_session').sessionServer());
+server.use('/examples', require(__dirname + '/server_example_form_and_session').sessionServer());
 
 server.get('/', function(request, response) {
   response.render('home', { title: 'client.express.js - home', source: 'server' });
