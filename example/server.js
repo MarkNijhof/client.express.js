@@ -12,7 +12,7 @@ server.configure(function(){
   server.use(express.session({ secret: "secret key"}));
   server.use(express.static(__dirname + './../'));
   server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-  server.use(_server.router);
+  server.use(server.router);
 
   server.register('.html', require('ejs'));
   server.set('view engine', 'html');
