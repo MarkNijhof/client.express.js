@@ -1,26 +1,22 @@
 
-var configure_server = function(_server) {
-  _server.configure(function(){
-    _server.use(express.logger());
-    _server.set('views', __dirname + '/views/');
-    _server.use(express.methodOverride());
-    _server.use(express.bodyParser());
-    _server.use(express.cookieParser());
-    _server.use(express.session({ secret: "secret key"}));
-    _server.use(express.static(__dirname + './../'));
-    _server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
-    _server.use(_server.router);
-
-    _server.register('.html', require('ejs'));
-    _server.set('view engine', 'html');
-  });
-}
-
 var express = require('express');
 
 var server = express.createServer();
 
-configure_server(server);
+server.configure(function(){
+  server.use(express.logger());
+  server.set('views', __dirname + '/views/');
+  server.use(express.methodOverride());
+  server.use(express.bodyParser());
+  server.use(express.cookieParser());
+  server.use(express.session({ secret: "secret key"}));
+  server.use(express.static(__dirname + './../'));
+  server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  server.use(_server.router);
+
+  server.register('.html', require('ejs'));
+  server.set('view engine', 'html');
+});
 
 server.use('/examples/processing_url_and_post_parameters', require(__dirname + '/examples/server_processing_url_and_post_parameters').sessionServer());
 
