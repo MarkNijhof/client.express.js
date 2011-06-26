@@ -16,7 +16,15 @@ class Bundler
         Fewer::Engines::Js.new(SRC_DIR, files).read
       end
 
+      write "#{DIST_DIR}/client.express-latest.js" do
+        Fewer::Engines::Js.new(SRC_DIR, files).read
+      end
+
       write "#{DIST_DIR}/client.express-#{version}.min.js" do
+        Fewer::Engines::Js.new(SRC_DIR, files, :min => true).read
+      end
+
+      write "#{DIST_DIR}/client.express-latest.min.js" do
         Fewer::Engines::Js.new(SRC_DIR, files, :min => true).read
       end
     end
