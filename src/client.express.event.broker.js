@@ -3,19 +3,19 @@ ClientExpress.EventBroker = (function(server) {
   
   var EventBroker = function(server) {
     this.server = server;
-    this._listeners = {};
+    this.eventListeners = {};
   };
   
   EventBroker.prototype.addListener = function(type, listener){
-    if (typeof this._listeners[type] == "undefined"){
-      this._listeners[type] = [];
+    if (typeof this.eventListeners[type] == "undefined"){
+      this.eventListeners[type] = [];
     }
-    this._listeners[type].push(listener);
+    this.eventListeners[type].push(listener);
   };
 
   EventBroker.prototype.removeListener = function(type, listener){
-    if (this._listeners[type] instanceof Array) {
-      var listeners = this._listeners[type];
+    if (this.eventListeners[type] instanceof Array) {
+      var listeners = this.eventListeners[type];
       listeners.forEach(function(item, index) {
         if (item === listener) {
           listeners.splice(index, 1);
@@ -39,8 +39,8 @@ ClientExpress.EventBroker = (function(server) {
     
     event.type = 'on' + event.type;
     
-    if (this._listeners[event.type] instanceof Array){
-      var listeners = this._listeners[event.type];
+    if (this.eventListeners[event.type] instanceof Array){
+      var listeners = this.eventListeners[event.type];
       listeners.forEach(function(item) {
         item.call(this.server, event);
       });

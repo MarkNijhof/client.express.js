@@ -144,6 +144,26 @@ ClientExpress.utils = (function () {
     };
   };
 
+  if (!Array.prototype.sortByName) {
+    Array.prototype.sortByName = function(name) {
+      var array = this;
+      if (array === void 0 || array === null) throw new TypeError();
+
+      if (typeof name !== "string") throw new TypeError();
+      
+      return array.sort(function(a, b){
+        var nameA = a[name].toLowerCase();
+        var nameB = b[name].toLowerCase();
+        
+        return (nameA < nameB) ?
+          -1 :
+          (nameA > nameB) ?
+            1 :
+            0;
+      });
+    };
+  };
+
   /**
    * ## Davis.utils.toArray
    * A convinience function for converting arguments to a proper array
@@ -156,7 +176,7 @@ ClientExpress.utils = (function () {
   var toArray = function (args, start) {
     var start = start || 0
     return Array.prototype.slice.call(args, start)
-  }
+  };
   
   var serializeArray = function(form) {
     // Return value
@@ -209,7 +229,19 @@ ClientExpress.utils = (function () {
       }
     }
     return retVal;
-  }
+  };
+  
+  var objectIterator = function(object, callback) {
+    for (var member in object) {
+      callBackValue = {
+        isFunction: object[member] instanceof Function,
+        name: member,
+        value: object[member]
+      };
+      callback(callBackValue);
+    }
+  };
+    
 
   /**
    * Exposing the public interface to the Utils module
@@ -221,7 +253,8 @@ ClientExpress.utils = (function () {
     filter: filter,
     map: map,
     toArray: toArray,
-    serializeArray: serializeArray
+    serializeArray: serializeArray,
+    objectIterator: objectIterator
   }
 })()
 

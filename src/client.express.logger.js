@@ -5,7 +5,7 @@ ClientExpress.Logger = (function() {
   };
   
   var formatString = function (args) {
-    return ClientExpress.utils.toArray(args).join(' ');
+    return args[0].join(' ');
   }
 
   Logger.prototype.error = function () {
