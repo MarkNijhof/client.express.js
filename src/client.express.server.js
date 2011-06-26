@@ -178,10 +178,6 @@ ClientExpress.Server = (function() {
       replaceState(request);
       
       server.log('information', "Listening");
-      ClientExpress.utils.objectIterator(server.eventBroker.eventListeners, function(item) {
-        server.log('information', 'Event registered:', item.name);
-      });
-      
       var routes = server.router.routes.get.concat(
                      server.router.routes.post.concat(
                        server.router.routes.put.concat(
@@ -248,7 +244,7 @@ ClientExpress.Server = (function() {
       request: event.request,
       target_element: event.target_element,
       content: templateEngine.compile(template, event.args)
-    })
+    });
   };
   
   var sendEventHandler = function(event) {
