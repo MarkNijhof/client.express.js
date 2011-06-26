@@ -9,7 +9,7 @@ server.configure(function() {
 });
 
 server.configure('development', function() {
-  server.use(server.logger());
+  server.use(ClientExpress.logger());
 });
 
 server.enable('development');

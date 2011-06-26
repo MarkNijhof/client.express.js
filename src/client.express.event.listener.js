@@ -1,5 +1,5 @@
 
-ClientExpress.EventListener = (function(server) {
+ClientExpress.EventListener = (function() {
   
   var EventListener = function() {
   };
@@ -30,7 +30,10 @@ ClientExpress.EventListener = (function(server) {
           }
         });
 
-        server.processRequest(request);
+        server.eventBroker.fire({
+          type: 'ProcessRequest',
+          request: request
+        });
         return false;
       }
     };
@@ -54,7 +57,10 @@ ClientExpress.EventListener = (function(server) {
           }
         });
 
-        server.processRequest(request);
+        server.eventBroker.fire({
+          type: 'ProcessRequest',
+          request: request
+        });
         return false;
       }
     };
@@ -67,7 +73,11 @@ ClientExpress.EventListener = (function(server) {
         var request = event.state
         request.__proto__ = ClientExpress.Request.prototype
         request.HistoryRequest();
-        server.processRequest(request);
+
+        server.eventBroker.fire({
+          type: 'ProcessRequest',
+          request: request
+        });
       }
     };
   };

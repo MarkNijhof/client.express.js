@@ -31,7 +31,8 @@ class Bundler
           client.express.js
           client.express.server.js
           client.express.route.js
-          client.express.router.js          
+          client.express.router.js
+          client.express.event.broker.js  
           client.express.event.listener.js
           client.express.request.js
           client.express.response.js

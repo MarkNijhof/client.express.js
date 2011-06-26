@@ -9,21 +9,25 @@ ClientExpress.Server = (function() {
     this.templateEngines = {};
     this.router = new ClientExpress.Router();
     this.eventListener = new ClientExpress.EventListener();
-    this.log = new ClientExpress.Logger();
+    this.eventBroker = new ClientExpress.EventBroker(this);
     this.session = {};
     this.content_target_element = document.childNodes[1];
     this.setup_functions = [];
-  }
-
-  Server.prototype.logger = function() {
-    var that = this;
-    return function() {
-      that.log.enable();
+    this.log = function() {
+      this.eventBroker.fire({
+        type: 'Log',
+        arguments: ClientExpress.utils.toArray(arguments)
+      });
     };
-  };
+        
+    this.eventBroker.addListener('onProcessRequest', processRequestEventHandler);
+    this.eventBroker.addListener('onRender', renderEventHandler);
+    this.eventBroker.addListener('onSend', sendEventHandler);
+    this.eventBroker.addListener('onRedirect', redirectEventHandler); 
+  }
   
   Server.prototype.content_target_area = function(id) {
-    var that = this;
+    var server = this;
     return function() {
       var target_element = document.getElementById ? 
         document.getElementById(id) : 
@@ -33,10 +37,10 @@ ClientExpress.Server = (function() {
             document.layers[id] : 
             null) );
 
-      that.content_target_element = target_element || document.childNodes[1]
+      server.content_target_element = target_element || document.childNodes[1]
 
-      if (that.content_target_element == document.childNodes[1]) {
-        that.log.warning("The element \"", id, "\" could not be located as a content target!")
+      if (server.content_target_element == document.childNodes[1]) {
+        this.log('warning', "Element \"", id, "\" could not be located!")
       }
     };
   };
@@ -54,10 +58,8 @@ ClientExpress.Server = (function() {
   };
    
   Server.prototype.use = function(path, other_server) {
-    var that = this;
-    
     if (typeof path == 'function') {
-      path.call();
+      path.call(this);
       return;
     }
     
@@ -75,18 +77,19 @@ ClientExpress.Server = (function() {
       return base_path + route;
     };
     
+    var server = this;
     var routes = other_server.router.routes;
     ClientExpress.utils.forEach(routes.get, function(other_route) {
-      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
+      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.post, function(other_route) {
-      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
+      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.put, function(other_route) {
-      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
+      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
     ClientExpress.utils.forEach(routes.del, function(other_route) {
-      add_route(that, other_route.method, join_routes(path, other_route.path), other_route.action, path);
+      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
   };
   
@@ -146,50 +149,20 @@ ClientExpress.Server = (function() {
   Server.prototype.del  = function(path, action) { return add_route(this, 'del',  path, action, ''); };
 
   var add_route = function(server, method, path, action, base_path) {
-    server.log.information(" + ", method.toUpperCase().lpad("    "), path);
     server.router.registerRoute(method, path, action, base_path);
     return server;
   };
   
-  Server.prototype.processRequest = function(request) {
-    var route = this.router.match(request.method, request.path);
-    
-    if (!route.resolved()) {
-      this.log.information(404, request.method.toUpperCase().lpad("    "), request.path);
-      request.delegateToServer();
-      return;
-    }
-
-    this.log.information(200, request.method.toUpperCase().lpad("    "), request.path);
-
-    var server = this;
-    request.attachRoute(route);
-    var response = new ClientExpress.Response(request, server);
-    if (!request.isHistoryRequest && !request.isRedirect) {
-        server.pushState(request);
-    }
-    route.action(request, response);
-    response.process();
-  };
-  
-  Server.prototype.pushState = function(request) {
-    history.pushState(request, request.title, request.location());
-  };
-  
-  Server.prototype.replaceState = function(request) {
-    history.replaceState(request, request.title, request.location());
-  };
-
   Server.prototype.listen = function() { 
     if (!ClientExpress.supported()) {
-      server.log.information("Not supported on this browser");
+      this.log('information', "Not supported on this browser");
       return;
     }
     
     var server = this;
     ClientExpress.onDomReady(function() {
       ClientExpress.utils.forEach(server.setup_functions, function(setup_function) {
-        setup_function.call();
+        setup_function.call(server);
       });
       server.eventListener.registerEventHandlers(server); 
       
@@ -202,25 +175,102 @@ ClientExpress.Server = (function() {
           window.location.pathname = window.location.pathname;
         }
       });
-      server.replaceState(request);
+      replaceState(request);
       
-      server.log.information("Listening");
+      server.log('information', "Listening");
       var routes = server.router.routes;
       ClientExpress.utils.forEach(routes.get, function(route) {
-        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+        server.log('information', 'Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
       });
       ClientExpress.utils.forEach(routes.post, function(route) {
-        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+        server.log('information', 'Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
       });
       ClientExpress.utils.forEach(routes.put, function(route) {
-        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+        server.log('information', 'Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
       });
       ClientExpress.utils.forEach(routes.del, function(route) {
-        server.log.information('Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
+        server.log('information', 'Route loaded:', route.method.toUpperCase().lpad("    "), route.path);
       });
       
     });
-  };  
+  };
+  
+  var pushState = function(request) {
+    history.pushState(request, request.title, request.location());
+  };
+  
+  var replaceState = function(request) {
+    history.replaceState(request, request.title, request.location());
+  };
+  
+  var processRequestEventHandler = function(event) {
+    var route = this.router.match(event.request.method, event.request.path);
+    
+    if (!route.resolved()) {
+      this.log('information', 404, event.request.method.toUpperCase().lpad("    "), event.request.path);
+      event.request.delegateToServer();
+      return;
+    }
+  
+    this.log('information', 200, event.request.method.toUpperCase().lpad("    "), event.request.path);
+  
+    var server = this;
+    event.request.attachRoute(route);
+    var response = new ClientExpress.Response(event.request, server);
+    if (!event.request.isHistoryRequest && !event.request.isRedirect) {
+        pushState(event.request);
+    }
+    route.action(event.request, response);
+  };
+  
+  var renderEventHandler = function(event) {
+    var views = this.settings['views'] || "";
+    var ext = this.settings['view engine'] || "";
+    
+    var template = views + event.template;
+
+    if (template.lastIndexOf(".") != -1 && template.lastIndexOf(".") <= 4) {
+      ext = template.substr(template.lastIndexOf(".") - 1, template.length);
+      template = template.substr(0, template.lastIndexOf(".") - 1);
+    }
+    var ext = ext || this.settings['view engine'] || "";
+    
+    if (ext != "") {
+      ext = "." + ext;
+      template = template + ext;
+    }
+    
+    var templateEngine = this.templateEngines[ext];
+    
+    this.eventBroker.fire({
+      type: 'Send',
+      request: event.request,
+      target_element: event.target_element,
+      content: templateEngine.compile(template, event.args)
+    })
+  };
+  
+  var sendEventHandler = function(event) {
+    event.target_element.innerHTML = event.content;
+  };
+  
+  var redirectEventHandler = function(event) {
+    this.log('information', 302, 'GET ', event.path);
+    var request = new ClientExpress.Request({
+      method: 'get',
+      fullPath: event.path,
+      title: '',
+      isRedirect: true,
+      session: this.session,
+      delegateToServer: function () {
+        window.location.pathname = event.path;
+      }
+    });
+    this.eventBroker.fire({
+      type: 'ProcessRequest',
+      request: request
+    });
+  };
   
   return Server;
   

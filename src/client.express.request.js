@@ -7,7 +7,8 @@ ClientExpress.Request = (function(raw_data) {
     this.session = raw_data.session;
     this.body = {};
     this.title = raw_data.title;
-    this.params;
+    this.params = [];
+    this.base_path = '';
     this.isRedirect = raw_data.isRedirect || false;
     this.queryString = raw_data.fullPath.split("?")[1];
 

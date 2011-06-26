@@ -6,7 +6,12 @@ exports.setup = function() {
         history: {
           pushState: function() {}
         },
-        event: function() {}
+        event: function() {},
+        location: {
+          protocol: 'http:',
+          host: 'example.com',
+          pathname: '/some/path'
+        }
       };
     },
 
