@@ -3,7 +3,7 @@ ClientExpress.processingUrlAndPostParameters = function() {
   var server = ClientExpress.createServer();
 
   server.get('/', function(request, response) {
-    response.render('processing_url_and_post_parameters/form', {title: 'client.express.js - client', source: 'client' });
+    response.render('processing_url_and_post_parameters/form', {title: 'Client Express JS - Example - Processing URL and POST parameters', source: 'client' });
   });
 
   server.post('/', function(request, response) {
@@ -24,7 +24,7 @@ ClientExpress.processingUrlAndPostParameters = function() {
       first_name: 'not set',
       last_name: 'not set'
     };
-    response.render('processing_url_and_post_parameters/output', {title: 'client.express.js - client', source: 'client', person: person });
+    response.render('processing_url_and_post_parameters/output', {title: 'Client Express JS - Example - Processing URL and POST parameters results', source: 'client', person: person });
   });
 
   return server;

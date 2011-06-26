@@ -21,19 +21,19 @@ server.configure(function(){
 server.use('/examples/processing_url_and_post_parameters', require(__dirname + '/examples/server_processing_url_and_post_parameters').sessionServer());
 
 server.get('/', function(request, response) {
-  response.render('home', { title: 'client.express.js - home', source: 'server' });
+  response.render('home', { title: 'Client Express JS - Home', source: 'server' });
 });
 
 server.get('/guide', function(request, response) {
-  response.render('guide', { title: 'client.express.js - guide', source: 'server' });
+  response.render('guide', { title: 'Client Express JS - Guide', source: 'server' });
 });
 
 server.get('/applications', function(request, response) {
-  response.render('applications', { title: 'client.express.js - applications', source: 'server' });
+  response.render('applications', { title: 'Client Express JS - Applications', source: 'server' });
 });
 
 server.get('/examples', function(request, response) {
-  response.render('examples', { title: 'client.express.js - examples', source: 'server' });
+  response.render('examples', { title: 'Client Express JS - Examples', source: 'server' });
 });
 
 var port = process.env.PORT || 3000;

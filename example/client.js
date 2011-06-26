@@ -2,6 +2,7 @@
 var server = ClientExpress.createServer();
 
 server.configure(function() {
+  server.use(ClientExpress.setTitle({ titleArgument: 'title' }));
   server.use(server.content_target_area("content"));
   server.set('views', '/example/views/');
   server.set('view engine', 'html');
@@ -17,19 +18,19 @@ server.enable('development');
 server.use('/examples/processing_url_and_post_parameters', ClientExpress.processingUrlAndPostParameters());
 
 server.get('/', function(request, response) {
-  response.render('home', { title: 'client.express.js - home', source: 'client' });
+  response.render('home', { title: 'Client Express JS - Home', source: 'client' });
 });
 
 server.get('/guide', function(request, response) {
-  response.render('guide', { title: 'client.express.js - guide', source: 'client' });
+  response.render('guide', { title: 'Client Express JS - Guide', source: 'client' });
 });
 
 server.get('/applications', function(request, response) {
-  response.render('applications', { title: 'client.express.js - applications', source: 'client' });
+  response.render('applications', { title: 'Client Express JS - Applications', source: 'client' });
 });
 
 server.get('/examples', function(request, response) {
-  response.render('examples', { title: 'client.express.js - examples', source: 'client' });
+  response.render('examples', { title: 'Client Express JS - Examples', source: 'client' });
 });
 
 server.listen();

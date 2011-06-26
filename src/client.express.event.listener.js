@@ -73,7 +73,7 @@ ClientExpress.EventListener = (function() {
         var request = event.state
         request.__proto__ = ClientExpress.Request.prototype
         request.HistoryRequest();
-
+        
         server.eventBroker.fire({
           type: 'ProcessRequest',
           request: request

@@ -21,6 +21,7 @@ ClientExpress.Server = (function() {
     };
         
     this.eventBroker.addListener('onProcessRequest', processRequestEventHandler);
+    this.eventBroker.addListener('onRequestProcessed', requestProcessedEventHandler);
     this.eventBroker.addListener('onRender', renderEventHandler);
     this.eventBroker.addListener('onSend', sendEventHandler);
     this.eventBroker.addListener('onRedirect', redirectEventHandler); 
@@ -188,7 +189,6 @@ ClientExpress.Server = (function() {
       ClientExpress.utils.forEach(routes, function(route) {
         server.log('information', 'Route registered:', route.method.toUpperCase().lpad("    "), route.path);
       });
-      
     });
   };
   
@@ -201,24 +201,33 @@ ClientExpress.Server = (function() {
   };
   
   var processRequestEventHandler = function(event) {
-    var route = this.router.match(event.request.method, event.request.path);
+    var server = this;
+    var request = event.request;
+    var route = this.router.match(request.method, request.path);
     
     if (!route.resolved()) {
-      this.log('information', 404, event.request.method.toUpperCase().lpad("    "), event.request.path);
+      this.log('information', 404, request.method.toUpperCase().lpad("    "), request.path);
       event.request.delegateToServer();
       return;
     }
   
-    this.log('information', 200, event.request.method.toUpperCase().lpad("    "), event.request.path);
+    this.log('information', 200, request.method.toUpperCase().lpad("    "), request.path);
   
-    var server = this;
-    event.request.attachRoute(route);
-    var response = new ClientExpress.Response(event.request, server);
+    request.attachRoute(route);
+    var response = new ClientExpress.Response(request, server);
+
+    // if (!event.request.isHistoryRequest && !event.request.isRedirect) {
+    //     pushState(event.request);
+    // }    
+
+    route.action(request, response);
+  };
+  
+  var requestProcessedEventHandler = function(event) {
     if (!event.request.isHistoryRequest && !event.request.isRedirect) {
         pushState(event.request);
-    }
-    route.action(event.request, response);
-  };
+    }    
+  }
   
   var renderEventHandler = function(event) {
     var views = this.settings['views'] || "";
@@ -239,34 +248,55 @@ ClientExpress.Server = (function() {
     
     var templateEngine = this.templateEngines[ext];
     
+    event.target_element.innerHTML = templateEngine.compile(template, event.args);
+
     this.eventBroker.fire({
-      type: 'Send',
+      type: 'RequestProcessed',
       request: event.request,
+      response: event.response, 
       target_element: event.target_element,
-      content: templateEngine.compile(template, event.args)
-    });
+      args: event.args || {}
+    });    
   };
   
   var sendEventHandler = function(event) {
     event.target_element.innerHTML = event.content;
+    
+    this.eventBroker.fire({
+      type: 'RequestProcessed',
+      request: event.request,
+      response: event.response, 
+      target_element: event.target_element,
+      args: {}
+    });    
   };
   
   var redirectEventHandler = function(event) {
     this.log('information', 302, 'GET ', event.path);
+    
     var request = new ClientExpress.Request({
       method: 'get',
       fullPath: event.path,
       title: '',
       isRedirect: true,
-      session: this.session,
+      session: event.request.session,
       delegateToServer: function () {
         window.location.pathname = event.path;
       }
     });
+
     this.eventBroker.fire({
       type: 'ProcessRequest',
       request: request
     });
+    
+    this.eventBroker.fire({
+      type: 'RequestProcessed',
+      request: event.request,
+      response: event.response, 
+      target_element: event.target_element,
+      args: {}
+    });    
   };
   
   return Server;

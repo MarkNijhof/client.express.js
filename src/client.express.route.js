@@ -27,7 +27,10 @@ ClientExpress.Route = (function(method, path, action, options) {
    * @api private
    */
   function normalize(path, keys, sensitive) {
-    if (path instanceof RegExp) return path; 
+    if (path instanceof RegExp) {
+      return path; 
+    }
+    
     path = path
       .concat('/?')
       .replace(/\/\(/g, '(?:/')

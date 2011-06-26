@@ -22,3 +22,21 @@ ClientExpress.logger = function() {
     });
   };
 };
+
+ClientExpress.setTitle = function(options) {
+  var titleArgument = (options && options.titleArgument);
+  
+  return function() {
+    var server = this;
+    server.eventBroker.addListener('onRequestProcessed', function(event) {
+      var title;
+      title = event.response.title;
+      if (titleArgument && event.args[titleArgument]) {
+        title = event.args[titleArgument];
+      }
+      if (title) {
+        document.title = title
+      }
+    });
+  };
+};

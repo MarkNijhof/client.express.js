@@ -5,7 +5,7 @@ exports.sessionServer = function() {
   var server = express.createServer();
 
   server.get('/', function(request, response) {
-    response.render('processing_url_and_post_parameters/form', {title: 'client.express.js - server', source: 'server' });
+    response.render('processing_url_and_post_parameters/form', {title: 'Client Express JS - Example - Processing URL and POST parameters', source: 'server' });
   });
 
   server.post('/', function(request, response) {
@@ -26,7 +26,7 @@ exports.sessionServer = function() {
       first_name: 'not set',
       last_name: 'not set'
     };
-    response.render('processing_url_and_post_parameters/output', {title: 'client.express.js - server', source: 'server', person: person });
+    response.render('processing_url_and_post_parameters/output', {title: 'Client Express JS - Example - Processing URL and POST parameters results', source: 'server', person: person });
   });
   
   return server;
