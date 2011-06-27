@@ -2,13 +2,13 @@
 ClientExpress.Route = (function(method, path, action, options) {
   
   var Route = function(method, path, action, base_path, options) {
-    this.resolved  = function() { return true; };
-    this.method    = method;
-    this.path      = path;
-    this.action    = action;
-    this.base_path = base_path;
-    this.params    = [];
-    this.regexp    = normalize(path, this.keys = [], options.sensitive);
+    this.resolved    = function() { return true; };
+    this.method      = method;
+    this.path        = path;
+    this.action      = action;
+    this.base_path   = base_path;
+    this.params      = [];
+    this.regexp      = normalize(path, this.keys = [], options.sensitive);
   };
 
   /**

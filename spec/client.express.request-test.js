@@ -21,7 +21,7 @@ var spec = describe("client.express.request", function () {
     var delegateToServerTriggered = false;
     var request = new ClientExpress.Request({
       method: 'get',
-      fullPath: 'http://example.com/url/something',
+      originalUrl: 'http://example.com/url/something',
       title: 'document title',
       session: { test: true },
       delegateToServer: function () {
@@ -29,7 +29,7 @@ var spec = describe("client.express.request", function () {
       }
     });
     
-    assertThat(request.path).equals('/url/something');
+    assertThat(request.originalUrl).equals('/url/something');
     assertThat(request.method).equals('get');
     assertThat(request.isHistoryRequest).isFalse();
     assertThat(request.title).equals('document title');
@@ -40,11 +40,12 @@ var spec = describe("client.express.request", function () {
     assertThat(delegateToServerTriggered).isTrue();
   });
 
-  should("be able to transform a query string to proper request body", function () {
+  should("be able to transform a form post to proper request body", function () {
     var delegateToServerTriggered = false;
     var request = new ClientExpress.Request({
       method: 'get',
-      fullPath: 'http://example.com/url/something?key1=value1&key2=value2',
+      originalUrl: 'http://example.com/url/something?key1=value1&key2=value2',
+      body: 'key3=value3&key4=value4',
       title: 'document title',
       session: { test: true },
       delegateToServer: function () {
@@ -52,15 +53,33 @@ var spec = describe("client.express.request", function () {
       }
     });
     
-    assertThat(request.body['key1']).equals('value1');
-    assertThat(request.body.key2).equals('value2');
+    assertThat(request.body['key3']).equals('value3');
+    assertThat(request.body.key4).equals('value4');
+  });
+
+  should("be able to transform a query string to proper request query", function () {
+    var delegateToServerTriggered = false;
+    var request = new ClientExpress.Request({
+      method: 'get',
+      originalUrl: 'http://example.com/url/something?key1=value1&key2=value2',
+      body: 'key3=value3&key4=value4',
+      title: 'document title',
+      session: { test: true },
+      delegateToServer: function () {
+        delegateToServerTriggered = true;
+      }
+    });
+    
+    assertThat(request.query['key1']).equals('value1');
+    assertThat(request.query.key2).equals('value2');
   });
 
   should("be able to define the request a history request", function () {
     var delegateToServerTriggered = false;
     var request = new ClientExpress.Request({
       method: 'get',
-      fullPath: 'http://example.com/url/something?key1=value1&key2=value2',
+      originalUrl: 'http://example.com/url/something?key1=value1&key2=value2',
+      body: 'key3=value3&key4=value4',
       title: 'document title',
       session: { test: true },
       delegateToServer: function () {

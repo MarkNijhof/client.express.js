@@ -152,8 +152,8 @@ ClientExpress.utils = (function () {
       if (typeof name !== "string") throw new TypeError();
       
       return array.sort(function(a, b){
-        var nameA = a[name].toLowerCase();
-        var nameB = b[name].toLowerCase();
+        var nameA = (a[name] instanceof RegExp ? a[name].source : a[name]).toLowerCase();
+        var nameB = (b[name] instanceof RegExp ? b[name].source : b[name]).toLowerCase();
         
         return (nameA < nameB) ?
           -1 :

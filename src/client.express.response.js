@@ -35,7 +35,7 @@ ClientExpress.Response = (function(request, server) {
       type: 'Redirect',
       request: this.request,
       response: this,
-      path: (path.substr(0, 1) == "/" ? this.request.base_path : '') + path
+      originalUrl: (path.substr(0, 1) == "/" ? this.request.base_path : '') + path
     });
   };
     

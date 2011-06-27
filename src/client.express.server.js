@@ -69,9 +69,20 @@ ClientExpress.Server = (function() {
     }
     
     var join_routes = function(base_path, route) {
+      if (route instanceof RegExp) {
+        var source = route.source
+        if (source.substr(0, 1) == '^') {
+          return new RegExp('^' + base_path + source.substr(1, source.length));
+        }
+        if (source.substr(0, 2) == '\\/') {
+          return new RegExp(base_path + source);
+        }
+        return new RegExp(base_path + '/' + source);
+      }
+      
       if (route == '/') {
         return base_path;
-      }
+      }      
       if (route.substr(0, 1) != '/') {
         return base_path + '/' + route;
       }
@@ -80,16 +91,16 @@ ClientExpress.Server = (function() {
     
     var server = this;
     var routes = other_server.router.routes;
-    ClientExpress.utils.forEach(routes.get, function(other_route) {
-      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
-    });
-    ClientExpress.utils.forEach(routes.post, function(other_route) {
-      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
-    });
-    ClientExpress.utils.forEach(routes.put, function(other_route) {
-      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
-    });
-    ClientExpress.utils.forEach(routes.del, function(other_route) {
+    
+    var routes = routes.get.concat(
+                   routes.post.concat(
+                     routes.put.concat(
+                       routes.del
+                     )
+                   )
+                 );
+                 
+    ClientExpress.utils.forEach(routes, function(other_route) {
       add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
     });
   };
@@ -169,7 +180,7 @@ ClientExpress.Server = (function() {
       
       var request = new ClientExpress.Request({
         method: 'get',
-        fullPath: window.location.pathname,
+        originalUrl: window.location.pathname,
         title: document.title,
         session: server.session,
         delegateToServer: function () {
@@ -186,6 +197,7 @@ ClientExpress.Server = (function() {
                        )
                      )
                    ).sortByName('path');
+                   
       ClientExpress.utils.forEach(routes, function(route) {
         server.log('information', 'Route registered:', route.method.toUpperCase().lpad("    "), route.path);
       });
@@ -203,22 +215,18 @@ ClientExpress.Server = (function() {
   var processRequestEventHandler = function(event) {
     var server = this;
     var request = event.request;
-    var route = this.router.match(request.method, request.path);
+    var route = this.router.match(request.method, request.originalUrl);
     
     if (!route.resolved()) {
-      this.log('information', 404, request.method.toUpperCase().lpad("    "), request.path);
+      this.log('information', 404, request.method.toUpperCase().lpad("    "), request.originalUrl);
       event.request.delegateToServer();
       return;
     }
   
-    this.log('information', 200, request.method.toUpperCase().lpad("    "), request.path);
+    this.log('information', 200, request.method.toUpperCase().lpad("    "), request.originalUrl);
   
     request.attachRoute(route);
     var response = new ClientExpress.Response(request, server);
-
-    // if (!event.request.isHistoryRequest && !event.request.isRedirect) {
-    //     pushState(event.request);
-    // }    
 
     route.action(request, response);
   };
@@ -272,16 +280,16 @@ ClientExpress.Server = (function() {
   };
   
   var redirectEventHandler = function(event) {
-    this.log('information', 302, 'GET ', event.path);
+    this.log('information', 302, 'GET ', event.originalUrl);
     
     var request = new ClientExpress.Request({
       method: 'get',
-      fullPath: event.path,
+      originalUrl: event.originalUrl,
       title: '',
       isRedirect: true,
       session: event.request.session,
       delegateToServer: function () {
-        window.location.pathname = event.path;
+        window.location.originalUrlname = event.originalUrl;
       }
     });
 

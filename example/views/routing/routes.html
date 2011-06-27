@@ -1,0 +1,221 @@
+
+<div id="generated-message-wrapper"><div id="generated-message">( generated on the <b>"<%= source %>"</b> )</div></div>
+<h1>Basic and advanced routing</h1>
+
+<p>
+  Here are many different routes defined which you can all test out and see the results.
+</p>
+
+<h3>Example 1</h3>
+<pre>
+server.get('/user/:id', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /user/:id - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/user/12">/examples/routing/user/12</a></li>
+      <li><a href="/examples/routing/user/mark">/examples/routing/user/mark</a></li>
+      <li><a href="/examples/routing/user/mark?last_name=nijhof">/examples/routing/user/mark?last_name=nijhof</a></li>
+  </div>
+</div>
+
+<h3>Example 2</h3>
+<pre>
+server.get('/users/:id?', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /users/:id? - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/users/12">/examples/routing/users/12</a></li>
+      <li><a href="/examples/routing/users">/examples/routing/users</a></li>
+      <li><a href="/examples/routing/users/mark?last_name=nijhof">/examples/routing/users/mark?last_name=nijhof</a></li>
+      <li><a href="/examples/routing/users?last_name=nijhof">/examples/routing/users?last_name=nijhof</a></li>
+  </div>
+</div>
+
+<h3>Example 3</h3>
+<pre>
+server.get('/files/*', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /files/* - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/files/jquery">/examples/routing/files/jquery</a></li>
+      <li><a href="/examples/routing/files/jquery.js">/examples/routing/files/jquery.js</a></li>
+      <li><a href="/examples/routing/files/javascript/jquery.js">/examples/routing/files/javascript/jquery.js</a></li>
+      <li><a href="/examples/routing/files/javascript/jquery.js?file=jquery.html">/examples/routing/files/javascript/jquery.js?file=jquery.html</a></li>
+  </div>
+</div>
+
+<h3>Example 4</h3>
+<pre>
+server.get('/files/*.*', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /files/*.* - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/file/jquery.js">/examples/routing/file/jquery.js</a></li>
+      <li><a href="/examples/routing/file/javascript/jquery.js">/examples/routing/file/javascript/jquery.js</a></li>
+      <li><a href="/examples/routing/file/javascript/jquery.js?file=jquery.html">/examples/routing/file/javascript/jquery.js?file=jquery.html</a></li>
+  </div>
+</div>
+
+<h3>Example 5</h3>
+<pre>
+server.get('/person/:id/:operation?', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /person/:id/:operation? - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/person/12">/examples/routing/person/12</a></li>
+      <li><a href="/examples/routing/person/12/edit">/examples/routing/person/12/edit</a></li>
+      <li><a href="/examples/routing/person/12/edit?first_name=mark">/examples/routing/person/12/edit?first_name=mark</a></li>
+  </div>
+</div>
+
+<h3>Example 6</h3>
+<pre>
+server.get('/product.:format', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /product.:format - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/product.json">/examples/routing/product.json</a></li>
+      <li><a href="/examples/routing/product.xml">/examples/routing/product.xml</a></li>
+      <li><a href="/examples/routing/product.json?id=12">/examples/routing/product.json?id=12</a></li>
+  </div>
+</div>
+
+<h3>Example 7</h3>
+<pre>
+server.get('/products.:format?', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /products.:format? - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/products.json">/examples/routing/products.json</a></li>
+      <li><a href="/examples/routing/products.xml">/examples/routing/products.xml</a></li>
+      <li><a href="/examples/routing/products">/examples/routing/products</a></li>
+      <li><a href="/examples/routing/products.json?id=12">/examples/routing/products.json?id=12</a></li>
+  </div>
+</div>
+
+<h3>Example 8</h3>
+<pre>
+server.get('/persons/:id.:format?', function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /persons/:id.:format? - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/persons/12">/examples/routing/persons/12</a></li>
+      <li><a href="/examples/routing/persons/12.json">/examples/routing/persons/12.json</a></li>
+      <li><a href="/examples/routing/persons/12.json?sort=desc">/examples/routing/persons/12.json?sort=desc</a></li>
+  </div>
+</div>
+
+<h3>Example 9</h3>
+<pre>
+server.get(/\/regex\/([^\/]+)\/?/, function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /\/regex\/([^\/]+)\/?/ - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/regex/12">/examples/routing/regex/12</a></li>
+      <li><a href="/examples/routing/regex/12.json">/examples/routing/regex/12.json</a></li>
+      <li><a href="/examples/routing/regex/12.json?sort=desc">/examples/routing/regex/12.json?sort=desc</a></li>
+  </div>
+</div>
+
+<h3>Example 10</h3>
+<pre>
+server.get(/^\/regexp?(?:\/(\d+)(?:\.\.(\d+))?)?/, function(request, response) {
+  response.render('routing/output', {
+    title: 'Client Express JS - /^\/regexp?(?:\/(\d+)(?:\.\.(\d+))?)?/ - Basic and advanced routing', 
+    source: 'client', 
+    processedRequest: processRequestObject(request) // used to display the request values
+  });
+});
+</pre>
+
+<div class="box">
+  <div class="text">
+    Click on the links below to test the different routes.</br></br>
+    <ul>
+      <li><a href="/examples/routing/regexp">/examples/routing/regexp</a></li>
+      <li><a href="/examples/routing/regexp/1">/examples/routing/regexp/1</a></li>
+      <li><a href="/examples/routing/regexp/1..15">/examples/routing/regexp/1..15</a></li>
+      <li><a href="/examples/routing/regexp/1..15?sort=desc">/examples/routing/regexp/1..15?sort=desc</a></li>
+  </div>
+</div>

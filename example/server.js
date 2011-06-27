@@ -18,7 +18,8 @@ server.configure(function(){
   server.set('view engine', 'html');
 });
 
-server.use('/examples/processing_url_and_post_parameters', require(__dirname + '/examples/server_processing_url_and_post_parameters').sessionServer());
+server.use('/examples/processing_url_and_post_parameters', require(__dirname + '/examples/server_processing_url_and_post_parameters').processingUrlAndPostParameters());
+server.use('/examples/routing', require(__dirname + '/examples/server_routing').routing());
 
 server.get('/', function(request, response) {
   response.render('home', { title: 'Client Express JS - Home', source: 'server' });

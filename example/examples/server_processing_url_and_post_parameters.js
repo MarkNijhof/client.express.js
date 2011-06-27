@@ -1,7 +1,7 @@
 
 var express = require('express');
 
-exports.sessionServer = function() {
+exports.processingUrlAndPostParameters = function() {
   var server = express.createServer();
 
   server.get('/', function(request, response) {

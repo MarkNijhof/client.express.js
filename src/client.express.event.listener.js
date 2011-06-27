@@ -18,11 +18,11 @@ ClientExpress.EventListener = (function() {
       if (element.tagName.toLowerCase() == 'a') {
         var request = new ClientExpress.Request({
           method: 'get',
-          fullPath: element.href,
+          originalUrl: element.href,
           title: element.title || '',
           session: server.session,
           delegateToServer: function () {
-            if (element.href.indexOf("://") != -1) {
+            if (~element.href.indexOf("://")) {
               window.location = element.href;
               return;
             }
@@ -49,7 +49,8 @@ ClientExpress.EventListener = (function() {
       
         var request = new ClientExpress.Request({
           method: element.method,
-          fullPath: [element.action, ClientExpress.utils.serializeArray(element)].join("?"),
+          originalUrl: element.action,
+          body: ClientExpress.utils.serializeArray(element),
           title: element.title,
           session: server.session,
           delegateToServer: function () {
@@ -66,7 +67,6 @@ ClientExpress.EventListener = (function() {
     };
   };
 
-  var firstPop = true;
   var setup_onpopstate_event_handler = function(server) {
     window.onpopstate = function(event) {
       if (event.state) {
