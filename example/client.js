@@ -3,6 +3,7 @@ var server = ClientExpress.createServer();
 
 server.configure(function() {
   server.use(ClientExpress.setTitle({ titleArgument: 'title' }));
+  server.use(ClientExpress.googleAnalytics());
   server.use(server.content_target_area("content"));
   server.set('views', '/example/views/');
   server.set('view engine', 'html');

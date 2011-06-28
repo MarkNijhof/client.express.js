@@ -40,3 +40,17 @@ ClientExpress.setTitle = function(options) {
     });
   };
 };
+
+
+ClientExpress.googleAnalytics = function() {
+  return function() {
+    var server = this;
+    server.eventBroker.addListener('onRequestProcessed', function(event) {
+      if (!event.isRedirect) {
+        if (_gaq) {
+          _gaq.push(['_trackPageview', event.request.originalUrl]);
+        }
+      }
+    });
+  };
+};
