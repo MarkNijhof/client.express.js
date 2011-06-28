@@ -13,12 +13,6 @@ ClientExpress.Server = (function() {
     this.session = {};
     this.content_target_element = document.childNodes[1];
     this.setup_functions = [];
-    this.log = function() {
-      this.eventBroker.fire({
-        type: 'Log',
-        arguments: ClientExpress.utils.toArray(arguments)
-      });
-    };
         
     this.eventBroker.addListener('onProcessRequest', processRequestEventHandler);
     this.eventBroker.addListener('onRequestProcessed', requestProcessedEventHandler);
@@ -26,6 +20,13 @@ ClientExpress.Server = (function() {
     this.eventBroker.addListener('onSend', sendEventHandler);
     this.eventBroker.addListener('onRedirect', redirectEventHandler); 
   }
+
+  Server.prototype.log = function() {
+    this.eventBroker.fire({
+      type: 'Log',
+      arguments: ClientExpress.utils.toArray(arguments)
+    });
+  };
   
   Server.prototype.content_target_area = function(id) {
     var server = this;
@@ -178,16 +179,15 @@ ClientExpress.Server = (function() {
       });
       server.eventListener.registerEventHandlers(server); 
       
-      var request = new ClientExpress.Request({
+      replaceState(new ClientExpress.Request({
         method: 'get',
-        originalUrl: window.location.pathname,
+        originalUrl: window.location.href,
         title: document.title,
         session: server.session,
         delegateToServer: function () {
-          window.location.pathname = window.location.pathname;
+          window.location = window.location.href;
         }
-      });
-      replaceState(request);
+      }));
       
       server.log('information', "Listening");
       var routes = server.router.routes.get.concat(
@@ -233,7 +233,8 @@ ClientExpress.Server = (function() {
   
   var requestProcessedEventHandler = function(event) {
     if (!event.request.isHistoryRequest && !event.request.isRedirect) {
-        pushState(event.request);
+      // if (event.request.)
+      pushState(event.request);
     }    
   }
   
