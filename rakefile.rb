@@ -25,14 +25,14 @@ task :major do
   version = File.read('VERSION').strip.split('.')
   major = Integer(version[1]) + 1
   
-  File.open('VERSION', 'w') {|f| f.write("#{major}.#{version[1]}.#{version[2]}") }
+  File.open('VERSION', 'w') {|f| f.write("#{major}.0.0") }
 end
 
 task :minor do
   version = File.read('VERSION').strip.split('.')
   minor = Integer(version[1]) + 1
   
-  File.open('VERSION', 'w') {|f| f.write("#{version[0]}.#{minor}.#{version[2]}") }
+  File.open('VERSION', 'w') {|f| f.write("#{version[0]}.#{minor}.0") }
 end
 
 task :patch do
