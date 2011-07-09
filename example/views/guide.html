@@ -7,9 +7,9 @@
 
 <h2 id="creating-a server">Creating A Server</h2>
 
-<p> To create an instance of the <em>ClientExpress.Server</em>, simply invoke the <em>createServer()</em> method. With our instance <em>server</em> we can then define routes based on the HTTP verbs, in this example <em>server.get()</em>.</p>
+<p> To create an instance of the <em>Client Express Server</em>, simply invoke the <em>createServer()</em> method. With our instance <em>server</em> we can then define routes based on the HTTP verbs, in this example <em>server.get()</em>.</p>
 
-<pre>var server = ClientExpress.createServer();
+<pre>var server = require('express').createServer();
 
 server.get('/', function(request, response){
   response.send('hello world');
@@ -153,7 +153,7 @@ may consume:</p>
 <p>For example we can <strong>POST</strong> some json, and echo the json back using the <em>bodyParser</em> middleware which will parse json request bodies (as well as others), and place the result in <em>request.body</em>:</p>
 
 <pre>
-var server = ClientExpress.createServer();
+var server = require('express').createServer();
 
 server.use(express.bodyParser());
 
