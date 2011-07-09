@@ -1,6 +1,8 @@
 
 ClientExpress = {};
 
+var __dirname = '';
+
 ClientExpress.createServer = function() {
   return new ClientExpress.Server();
 };

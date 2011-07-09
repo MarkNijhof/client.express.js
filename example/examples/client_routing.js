@@ -1,6 +1,8 @@
 
-ClientExpress.routing = function() {
-  var server = ClientExpress.createServer();
+var express = require('express');
+
+exports.routing = function() {
+  var server = express.createServer();
 
   server.get('/', function(request, response) {
     response.render('routing/routes', {title: 'Client Express JS - Example - Basic and advanced routing', source: 'client' });

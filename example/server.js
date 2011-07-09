@@ -37,6 +37,26 @@ server.get('/examples', function(request, response) {
   response.render('examples', { title: 'Client Express JS - Examples', source: 'server' });
 });
 
+server.get('/test', function(request, response) {
+  console.log('enters');
+  var sum = 0
+  var i = 0;
+  
+  var doLoop = function() {
+    i = i + 1;
+    if(i < 10000000){
+      console.log('test:' + i);
+      setTimeout(doLoop, 1000);
+    } else {
+      response.send('' + sum)
+    }
+  };
+  doLoop();
+  console.log('enters 123');
+});
+
+
+
 var port = process.env.PORT || 3000;
 console.log("Listening on " + port);
 server.listen(port);

@@ -46,6 +46,7 @@ class Bundler
           client.express.response.js
           client.express.logger.js
           client.express.utils.js
+          client.express.require.js
         )
       end
 

@@ -1,6 +1,8 @@
 
-ClientExpress.processingUrlAndPostParameters = function() {
-  var server = ClientExpress.createServer();
+var express = require('express');
+
+exports.processingUrlAndPostParameters = function() {
+  var server = express.createServer();
 
   server.get('/', function(request, response) {
     response.render('processing_url_and_post_parameters/form', {title: 'Client Express JS - Example - Processing URL and POST parameters', source: 'client' });
