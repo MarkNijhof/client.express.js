@@ -2,20 +2,40 @@
 // CommonJS require()
 
 function require_override(p){
+  
+  function createXMLHttp() {
+    if (typeof XMLHttpRequest != 'undefined') {
+      return new XMLHttpRequest();
+    } else if (window.ActiveXObject) {
+      var avers = ["Microsoft.XmlHttp", "MSXML2.XmlHttp", "MSXML2.XmlHttp.3.0", "MSXML2.XmlHttp.4.0", "MSXML2.XmlHttp.5.0"];
+      for (var i = avers.length -1; i >= 0; i--) {
+        try {
+          httpObj = new ActiveXObject(avers[i]);
+          return httpObj;
+        } catch(e) {}
+      }
+    }
+    throw new Error('XMLHttp (AJAX) not supported');
+  }
+
+  var ajaxObj = createXMLHttp();
+  
   var path = require.resolve(p)
     , mod = require.modules[path];
   if (!mod) {
     var exports;
-    $.ajax({ 
-      type: "GET",
-      url: path + '.js',   
-      async: false,
-      success : function(text) {
+    
+    var ajaxObj = createXMLHttp();
+    ajaxObj.open('GET', path + '.js', false);
+    ajaxObj.onreadystatechange = function() {
+      if (this.readyState == 4 && this.status == 200) {
         exports = {};
-        eval(text);
+        eval(this.responseText);
         require.modules[path + '.js'] = { exports: exports };
       }
-    });
+    };
+    ajaxObj.send();
+
     if (exports != null) {
       return exports;
     }
@@ -76,6 +96,27 @@ require.register("express.js", function(module, exports, require){
   exports.createServer = function() {
     return ClientExpress.createServer();
   };
+
+  exports.logger = function() {
+    return ClientExpress.logger();
+  };
+  
+  exports.setTitle = function(options) {
+    return ClientExpress.setTitle(options);
+  };
+  
+  exports.googleAnalytics = function() {
+    return ClientExpress.googleAnalytics();
+  };
+  
+  // Dummies
+
+  exports.methodOverride  = function() { return function() {}; };
+  exports.bodyParser      = function() { return function() {}; };
+  exports.cookieParser    = function() { return function() {}; };
+  exports.session         = function() { return function() {}; };
+  exports.static          = function() { return function() {}; };
+  exports.errorHandler    = function() { return function() {}; };
 
 });
 

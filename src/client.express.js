@@ -43,7 +43,6 @@ ClientExpress.setTitle = function(options) {
   };
 };
 
-
 ClientExpress.googleAnalytics = function() {
   return function() {
     var server = this;

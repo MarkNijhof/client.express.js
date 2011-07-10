@@ -65,45 +65,47 @@ ClientExpress.Server = (function() {
       return;
     }
     
-    if (path[path.length - 1] === '/') {
-      path = path.substring(0, path.length-1);
-    }
-    
-    var join_routes = function(base_path, route) {
-      if (route instanceof RegExp) {
-        var source = route.source
-        if (source.substr(0, 1) == '^') {
-          return new RegExp('^' + base_path + source.substr(1, source.length));
-        }
-        if (source.substr(0, 2) == '\\/') {
-          return new RegExp(base_path + source);
-        }
-        return new RegExp(base_path + '/' + source);
+    if (typeof path == 'string') {
+      if (path[path.length - 1] === '/') {
+        path = path.substring(0, path.length-1);
       }
+    
+      var join_routes = function(base_path, route) {
+        if (route instanceof RegExp) {
+          var source = route.source
+          if (source.substr(0, 1) == '^') {
+            return new RegExp('^' + base_path + source.substr(1, source.length));
+          }
+          if (source.substr(0, 2) == '\\/') {
+            return new RegExp(base_path + source);
+          }
+          return new RegExp(base_path + '/' + source);
+        }
       
-      if (route == '/') {
-        return base_path;
-      }      
-      if (route.substr(0, 1) != '/') {
-        return base_path + '/' + route;
-      }
-      return base_path + route;
-    };
+        if (route == '/') {
+          return base_path;
+        }      
+        if (route.substr(0, 1) != '/') {
+          return base_path + '/' + route;
+        }
+        return base_path + route;
+      };
     
-    var server = this;
-    var routes = other_server.router.routes;
+      var server = this;
+      var routes = other_server.router.routes;
     
-    var routes = routes.get.concat(
-                   routes.post.concat(
-                     routes.put.concat(
-                       routes.del
+      var routes = routes.get.concat(
+                     routes.post.concat(
+                       routes.put.concat(
+                         routes.del
+                       )
                      )
-                   )
-                 );
+                   );
                  
-    ClientExpress.utils.forEach(routes, function(other_route) {
-      add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
-    });
+      ClientExpress.utils.forEach(routes, function(other_route) {
+        add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
+      });
+    }
   };
   
   Server.prototype.set = function(setting, val){

@@ -6,19 +6,23 @@ var express = require('express');
 var server = express.createServer();
 
 server.configure(function() {
-  server.use(ClientExpress.setTitle({ titleArgument: 'title' }));
-  server.use(ClientExpress.googleAnalytics());
+  server.use(express.logger());
+  server.set('views', __dirname + '/views/');
+  server.use(express.methodOverride());
+  server.use(express.bodyParser());
+  server.use(express.cookieParser());
+  server.use(express.session({ secret: "secret key"}));
+  server.use(express.static(__dirname + './../'));
+  server.use(express.errorHandler({ dumpExceptions: true, showStack: true }));
+  server.use(server.router);
+
+  server.use(express.setTitle({ titleArgument: 'title' }));
+  server.use(express.googleAnalytics());
   server.use(server.content_target_area("content"));
-  server.set('views', '/example/views/');
+
+  server.register('.html', require('ejs'));
   server.set('view engine', 'html');
-  server.register('.html', template_engine);
 });
-
-server.configure('development', function() {
-  server.use(ClientExpress.logger());
-});
-
-server.enable('development');
 
 server.use('/examples/processing_url_and_post_parameters', require(__dirname + '/examples/server_processing_url_and_post_parameters').processingUrlAndPostParameters());
 server.use('/examples/routing', require(__dirname + '/examples/server_routing').routing());
