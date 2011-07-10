@@ -110,12 +110,11 @@ require.register("express.js", function(module, exports, require){
   };
   
   // Dummies
-
   exports.methodOverride  = function() { return function() {}; };
   exports.bodyParser      = function() { return function() {}; };
   exports.cookieParser    = function() { return function() {}; };
   exports.session         = function() { return function() {}; };
-  exports.static          = function() { return function() {}; };
+  exports['static']       = function() { return function() {}; };
   exports.errorHandler    = function() { return function() {}; };
 
 });

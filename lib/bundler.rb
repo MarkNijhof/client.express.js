@@ -1,8 +1,6 @@
 require 'fileutils'
 
 require 'rubygems'
-require 'closure-compiler'
-require 'fewer'
 
 class Bundler
   DIST_DIR = File.expand_path('../../dist', __FILE__)
@@ -12,44 +10,17 @@ class Bundler
     def bundle!
       FileUtils.mkdir_p(DIST_DIR)
 
-      write "#{DIST_DIR}/client.express-#{version}.js" do
-        Fewer::Engines::Js.new(SRC_DIR, files).read
-      end
-
-      write "#{DIST_DIR}/client.express-latest.js" do
-        Fewer::Engines::Js.new(SRC_DIR, files).read
-      end
-
-      write "#{DIST_DIR}/client.express-#{version}.min.js" do
-        Fewer::Engines::Js.new(SRC_DIR, files, :min => true).read
-      end
-
-      write "#{DIST_DIR}/client.express-latest.min.js" do
-        Fewer::Engines::Js.new(SRC_DIR, files, :min => true).read
-      end
-    end
-
-    def bundled
-      Fewer::Engines::Js.new(SRC_DIR, files).read
+      sh "juicer merge -s -i #{SRC_DIR}/client.express.js -o #{DIST_DIR}/client.express.min-#{version}.js -m closure_compiler -f"
+      sh "juicer merge -s -i #{SRC_DIR}/client.express.require.ejs.js -o #{DIST_DIR}/client.express.require.ejs.min-#{version}.js -m closure_compiler -f"
+      
+      write "#{DIST_DIR}/client.express.min-#{version}.js"
+      write "#{DIST_DIR}/client.express.require.ejs.min-#{version}.js"
+      
+      sh "cp #{DIST_DIR}/client.express.min-#{version}.js #{DIST_DIR}/client.express.min-latest.js"
+      sh "cp #{DIST_DIR}/client.express.require.ejs.min-#{version}.js #{DIST_DIR}/client.express.require.ejs.min-latest.js"
     end
 
     private
-      def files
-        @files ||= %w(
-          client.express.js
-          client.express.server.js
-          client.express.route.js
-          client.express.router.js
-          client.express.event.broker.js  
-          client.express.event.listener.js
-          client.express.request.js
-          client.express.response.js
-          client.express.logger.js
-          client.express.utils.js
-          client.express.require.js
-        )
-      end
-
       def header
         @header ||= File.read(File.join(SRC_DIR, 'header.js'))
       end
@@ -58,12 +29,16 @@ class Bundler
         @version ||= File.read('VERSION').strip
       end
 
-      def write(path, &block)
+      def write(path)
         puts "Generating #{path}"
-
+        
+        content = ''
+        File.open(path, 'r') do |f|
+          content = f.read
+        end
         File.open(path, 'w') do |f|
           f.write header.gsub('@VERSION', version)
-          f.write yield.gsub('@VERSION', version)
+          f.write content.gsub('@VERSION', version)
         end
       end
   end
