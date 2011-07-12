@@ -22,7 +22,7 @@ ClientExpress.Request = (function(raw_data) {
     this.routePath = this.originalUrl.replace(/\?.+$/, "");
     this.delegateToServer = raw_data.delegateToServer || function() {};
   };
-
+  
   Request.prototype.processQueryString = function(queryString, object) {
     if (queryString) {
       ClientExpress.utils.forEach(queryString.split("&"), function (keyval) {

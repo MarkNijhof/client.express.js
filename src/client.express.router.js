@@ -6,7 +6,9 @@ ClientExpress.Router = (function() {
       get: [],
       post: [],
       put: [],
-      del: []
+      del: [],
+      before: [],
+      after: []
     };
   };
   

@@ -14,19 +14,20 @@ ClientExpress.Response = (function(request, server) {
       type: 'Send',
       request: this.request,
       response: this,
-      target_element: this.server.content_target_element,
+      content_element: this.server.content_element,
       content: string
     });
   };  
   
   Response.prototype.render = function(template, args) {
+    var that = this;
     this.server.eventBroker.fire({
-      type: 'Render',
-      request: this.request,
-      response: this,
-      target_element: this.server.content_target_element,
+      type: 'BeforeRender',
+      request: that.request,
+      response: that,
+      content_element: that.server.content_element,
       template: template,
-      args: args
+      args: args || {}
     });
   };
   

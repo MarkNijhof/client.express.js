@@ -108,6 +108,10 @@ require.register("express.js", function(module, exports, require){
   exports.googleAnalytics = function() {
     return ClientExpress.googleAnalytics();
   };
+
+  exports.setContentElement = function(content_id) {
+    return ClientExpress.setContentElement(content_id);
+  };
   
   // Dummies
   exports.methodOverride  = function() { return function() {}; };

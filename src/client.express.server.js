@@ -11,11 +11,13 @@ ClientExpress.Server = (function() {
     this.eventListener = new ClientExpress.EventListener();
     this.eventBroker = new ClientExpress.EventBroker(this);
     this.session = {};
-    this.content_target_element = document.childNodes[1];
+    this.content_element = document.childNodes[1];
     this.setup_functions = [];
         
     this.eventBroker.addListener('onProcessRequest', processRequestEventHandler);
     this.eventBroker.addListener('onRequestProcessed', requestProcessedEventHandler);
+    this.eventBroker.addListener('onBeforeRender', beforeRenderEventHandler);
+    this.eventBroker.addListener('onAfterRender', afterRenderEventHandler);
     this.eventBroker.addListener('onRender', renderEventHandler);
     this.eventBroker.addListener('onSend', sendEventHandler);
     this.eventBroker.addListener('onRedirect', redirectEventHandler); 
@@ -26,25 +28,6 @@ ClientExpress.Server = (function() {
       type: 'Log',
       arguments: ClientExpress.utils.toArray(arguments)
     });
-  };
-  
-  Server.prototype.content_target_area = function(id) {
-    var server = this;
-    return function() {
-      var target_element = document.getElementById ? 
-        document.getElementById(id) : 
-        (document.all ? 
-          document.all[id] : 
-          (document.layers ? 
-            document.layers[id] : 
-            null) );
-
-      server.content_target_element = target_element || document.childNodes[1]
-
-      if (server.content_target_element == document.childNodes[1]) {
-        this.log('warning', "Element \"", id, "\" could not be located!")
-      }
-    };
   };
   
   Server.prototype.configure = function(environment, configure_function) {
@@ -97,7 +80,11 @@ ClientExpress.Server = (function() {
       var routes = routes.get.concat(
                      routes.post.concat(
                        routes.put.concat(
-                         routes.del
+                         routes.del.concat(
+                           routes.before.concat(
+                             routes.after
+                           )
+                         )
                        )
                      )
                    );
@@ -158,10 +145,12 @@ ClientExpress.Server = (function() {
     }
   };
   
-  Server.prototype.get  = function(path, action) { return add_route(this, 'get',  path, action, ''); };
-  Server.prototype.post = function(path, action) { return add_route(this, 'post', path, action, ''); };
-  Server.prototype.put  = function(path, action) { return add_route(this, 'put',  path, action, ''); };
-  Server.prototype.del  = function(path, action) { return add_route(this, 'del',  path, action, ''); };
+  Server.prototype.get    = function(path, action) { return add_route(this, 'get',    path, action, ''); };
+  Server.prototype.post   = function(path, action) { return add_route(this, 'post',   path, action, ''); };
+  Server.prototype.put    = function(path, action) { return add_route(this, 'put',    path, action, ''); };
+  Server.prototype.del    = function(path, action) { return add_route(this, 'del',    path, action, ''); };
+  Server.prototype.before = function(path, action) { return add_route(this, 'before', path, action, ''); };
+  Server.prototype.after  = function(path, action) { return add_route(this, 'after',  path, action, ''); };
 
   var add_route = function(server, method, path, action, base_path) {
     server.router.registerRoute(method, path, action, base_path);
@@ -176,6 +165,10 @@ ClientExpress.Server = (function() {
     
     var server = this;
     ClientExpress.onDomReady(function() {
+      server.eventBroker.fire({
+        type: 'BeforeApplyingConfiguration',
+        server: server
+      });
       ClientExpress.utils.forEach(server.setup_functions, function(setup_function) {
         setup_function.call(server);
       });
@@ -235,10 +228,36 @@ ClientExpress.Server = (function() {
   
   var requestProcessedEventHandler = function(event) {
     if (!event.request.isHistoryRequest && !event.request.isRedirect) {
-      // if (event.request.)
       pushState(event.request);
     }    
   }
+  
+  var beforeRenderEventHandler = function(event) {
+    var server = this;
+    var request = event.request;
+    var response = event.response;
+    var route = this.router.match('before', request.originalUrl);
+    
+    var next = function() {
+      server.eventBroker.fire({
+        type: 'Render',
+        request: request,
+        response: response,
+        content_element: event.content_element,
+        template: event.template,
+        args: event.args
+      });
+    };
+    
+    if (!route.resolved()) {
+      next();
+      return;
+    }
+  
+    // this.log('information', 200, request.method.toUpperCase().lpad("    "), 'before', request.originalUrl);
+  
+    route.action(request, response, event.content_element, next);
+  };
   
   var renderEventHandler = function(event) {
     var views = this.settings['views'] || "";
@@ -258,26 +277,54 @@ ClientExpress.Server = (function() {
     }
     
     var templateEngine = this.templateEngines[ext];
-    
-    event.target_element.innerHTML = templateEngine.compile(template, event.args);
 
+    event.content_element.innerHTML = templateEngine.compile(template, event.args);
+    
     this.eventBroker.fire({
-      type: 'RequestProcessed',
+      type: 'AfterRender',
       request: event.request,
-      response: event.response, 
-      target_element: event.target_element,
-      args: event.args || {}
-    });    
+      response: event.response,
+      content_element: event.content_element,
+      template: event.template,
+      args: event.args
+    });
+  };
+
+  var afterRenderEventHandler = function(event) {
+    var server = this;
+    var request = event.request;
+    var response = event.response;
+    var route = this.router.match('after', request.originalUrl);
+    
+    var next = function() {
+      server.eventBroker.fire({
+        type: 'RequestProcessed',
+        request: request,
+        response: response,
+        content_element: event.content_element,
+        template: event.template,
+        args: event.args
+      });
+    };
+    
+    if (!route.resolved()) {
+      next();
+      return;
+    }
+  
+    // this.log('information', 200, request.method.toUpperCase().lpad("    "), 'after', request.originalUrl);
+  
+    route.action(request, response, event.content_element, next);
   };
   
   var sendEventHandler = function(event) {
-    event.target_element.innerHTML = event.content;
+    event.content_element.innerHTML = event.content;
     
     this.eventBroker.fire({
       type: 'RequestProcessed',
       request: event.request,
       response: event.response, 
-      target_element: event.target_element,
+      content_element: event.content_element,
       args: {}
     });    
   };
@@ -305,7 +352,7 @@ ClientExpress.Server = (function() {
       type: 'RequestProcessed',
       request: event.request,
       response: event.response, 
-      target_element: event.target_element,
+      content_element: event.content_element,
       args: {}
     });    
   };

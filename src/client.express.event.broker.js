@@ -7,6 +7,10 @@ ClientExpress.EventBroker = (function(server) {
   };
   
   EventBroker.prototype.addListener = function(type, listener){
+    if (typeof listener != 'function') {
+      throw new Error("Event handler for '" + type + "' needs to be a function");
+    }
+    
     if (typeof this.eventListeners[type] == "undefined"){
       this.eventListeners[type] = [];
     }
@@ -26,6 +30,7 @@ ClientExpress.EventBroker = (function(server) {
   };
   
   EventBroker.prototype.fire = function(event){
+    var that = this;
     if (typeof event == "string"){
       event = { type: event };
     }

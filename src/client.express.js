@@ -15,6 +15,7 @@
 ClientExpress = {};
 
 var __dirname = '';
+var process = { env: { PORT: 3000 } };
 
 ClientExpress.createServer = function() {
   return new ClientExpress.Server();
@@ -68,3 +69,24 @@ ClientExpress.googleAnalytics = function() {
     });
   };
 };
+
+  
+ClientExpress.setContentElement = function(content_id) {
+  return function() {
+    var server = this;
+    var content_element = document.getElementById ? 
+      document.getElementById(content_id) : 
+      (document.all ? 
+        document.all[content_id] : 
+        (document.layers ? 
+          document.layers[content_id] : 
+          null) );
+
+    server.content_element = content_element || document.childNodes[1]
+
+    if (server.content_element == document.childNodes[1]) {
+      this.log('warning', "Element '", content_id, "' could not be located!")
+    }
+  };
+};
+
