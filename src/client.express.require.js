@@ -30,7 +30,7 @@ function require_override(p){
     ajaxObj.onreadystatechange = function() {
       if (this.readyState == 4 && this.status == 200) {
         exports = {};
-        eval(this.responseText);
+        (new Function('exports', this.responseText))(exports);
         require.modules[path + '.js'] = { exports: exports };
       }
     };

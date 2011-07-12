@@ -43,16 +43,18 @@ ClientExpress.Server = (function() {
   };
    
   Server.prototype.use = function(path, other_server) {
+    
+    var server = this;
     if (typeof path == 'function') {
       path.call(this);
       return;
     }
-    
+  
     if (typeof path == 'string') {
       if (path[path.length - 1] === '/') {
         path = path.substring(0, path.length-1);
       }
-    
+  
       var join_routes = function(base_path, route) {
         if (route instanceof RegExp) {
           var source = route.source
@@ -64,7 +66,7 @@ ClientExpress.Server = (function() {
           }
           return new RegExp(base_path + '/' + source);
         }
-      
+    
         if (route == '/') {
           return base_path;
         }      
@@ -73,10 +75,9 @@ ClientExpress.Server = (function() {
         }
         return base_path + route;
       };
-    
-      var server = this;
+  
       var routes = other_server.router.routes;
-    
+  
       var routes = routes.get.concat(
                      routes.post.concat(
                        routes.put.concat(
@@ -88,7 +89,7 @@ ClientExpress.Server = (function() {
                        )
                      )
                    );
-                 
+               
       ClientExpress.utils.forEach(routes, function(other_route) {
         add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
       });
