@@ -255,9 +255,7 @@ ClientExpress.Server = (function() {
       return;
     }
   
-    // this.log('information', 200, request.method.toUpperCase().lpad("    "), 'before', request.originalUrl);
-  
-    route.action(request, response, event.content_element, next);
+    route.action(request, response, event.args, event.content_element, next);
   };
   
   var renderEventHandler = function(event) {
@@ -313,9 +311,7 @@ ClientExpress.Server = (function() {
       return;
     }
   
-    // this.log('information', 200, request.method.toUpperCase().lpad("    "), 'after', request.originalUrl);
-  
-    route.action(request, response, event.content_element, next);
+    route.action(request, response, event.args, event.content_element, next);
   };
   
   var sendEventHandler = function(event) {

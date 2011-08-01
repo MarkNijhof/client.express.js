@@ -2,7 +2,7 @@
     "name": "client.express.js",
     "version": "0.0.1",
     "dependencies": {
-      "express": "2.2.0",
+      "express": "2.4.3",
       "ejs": "0.4.2"
     }
 }

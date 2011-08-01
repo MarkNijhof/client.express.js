@@ -6,11 +6,12 @@ server.configure(function() {
   server.use(express.setContentElement("content"));
 });
 
-server.before('*', function(request, response, content_element, next) {
+server.before('*', function(request, response, args, content_element, next) {
+  args.source = 'client';
   $(content_element).fadeOut(function() { next(); });
 });
 
-server.after('*', function(request, response, content_element, next) {
+server.after('*', function(request, response, args, content_element, next) {
   $(content_element).fadeIn(function() { next(); });
 });
 
