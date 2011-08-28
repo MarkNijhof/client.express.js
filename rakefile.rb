@@ -47,7 +47,5 @@ task :publish do
 
   file = File.read('package.json')
   File.open('package.json', "w"){|f| f.write(file.gsub(/\"version\": \"\d+?\.\d+?\.\d+?\"/, "\"version\": \"#{version}\"")) }
-  
-  exec "npm publish"
 end
 
