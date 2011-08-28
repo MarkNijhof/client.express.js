@@ -41,3 +41,13 @@ task :patch do
   
   File.open('VERSION', 'w') {|f| f.write("#{version[0]}.#{version[1]}.#{patch}") }
 end
+
+task :publish do
+  version = File.read('VERSION').strip
+
+  file = File.read('package.json')
+  File.open('package.json', "w"){|f| f.write(file.gsub(/\"version\": \"\d+?\.\d+?\.\d+?\"/, "\"version\": \"#{version}\"")) }
+  
+  exec "npm publish"
+end
+
