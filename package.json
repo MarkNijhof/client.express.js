@@ -1,5 +1,5 @@
 {
-    "name": "ClientExpress",
+    "name": "clientexpress",
     "description": "An implementation of the Express framework for use in the browser to progressively enhance the user experience using JavaScript",
     "version": "0.7.0",
     "url": "http://clientexpressjs.com",
