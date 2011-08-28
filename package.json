@@ -1,7 +1,7 @@
 {
   "name": "clientexpress",
   "description": "An implementation of the Express API for use in the browser to progressively enhance the user experience using JavaScript",
-  "version": "0.7.0",
+  "version": "0.7.2",
   "url": "http://clientexpressjs.com",
   "author": "Mark Nijhof",
   "engines": ["node >= 0.4.0"],
