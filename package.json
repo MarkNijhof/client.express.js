@@ -1,19 +1,17 @@
 {
-    "name": "clientexpress",
-    "description": "An implementation of the Express framework for use in the browser to progressively enhance the user experience using JavaScript",
-    "keywords": ["client", "express", "pushState", "html5"],
-    "version": "0.7.1",
-    "url": "http://clientexpressjs.com",
-    "author": "Mark Nijhof <mark.nijhof@cre8ivethought.com>",
-    "engines": { "node": ">= 0.4.9 < 0.7.0" },
-    "main": "./lib/client.express.handler",
-    "devDependencies": {
-      "express": "2.4.6",
-      "ejs": "0.4.2",
-      "glob": "2.0.8"
-    },
-    "repository": {
-      "type": "git",
-      "url": "https://MarkNijhof@github.com/MarkNijhof/client.express.js.git"
-    }
+  "name": "clientexpress",
+  "description": "An implementation of the Express API for use in the browser to progressively enhance the user experience using JavaScript",
+  "version": "0.7.0",
+  "url": "http://clientexpressjs.com",
+  "author": "Mark Nijhof",
+  "engines": ["node >= 0.4.0"],
+  "main": "./src/client.express.js",
+  "devDependencies": {
+    "express": "2.4.3",
+    "ejs": "0.4.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://MarkNijhof@github.com/MarkNijhof/client.express.js.git"
+  }
 }
