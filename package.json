@@ -2,10 +2,11 @@
   "name": "clientexpress",
   "description": "An implementation of the Express API for use in the browser to progressively enhance the user experience using JavaScript",
   "version": "0.7.2",
-  "url": "http://clientexpressjs.com",
-  "author": "Mark Nijhof",
-  "engines": ["node >= 0.4.0"],
-  "main": "./lib/client.express.handler",
+  "author": "Mark Nijhof <mark.nijhof@cre8ivethought.com> (cre8ivethought.com)",
+  "engines": {
+    "node": ">= 0.4.0"
+  },
+  "main": "clientexpress",
   "devDependencies": {
     "express": "2.4.3",
     "ejs": "0.4.2",
@@ -14,6 +15,8 @@
   },
   "repository": {
     "type": "git",
-    "url": "https://MarkNijhof@github.com/MarkNijhof/client.express.js.git"
-  }
+    "url": "git://github.com/MarkNijhof/client.express.js.git"
+  },
+  "dependencies": {},
+  "homepage": "http://clientexpressjs.com"
 }
