@@ -659,9 +659,12 @@ body.three-col #main-area {
   overflow-x: hidden;
 }
 /* line 135, ../src/screen.scss */
-body.three-col #content {
+body.three-col #content-wrapper {
   padding: 90px 60px 10px 70px;
   position: relative;
+}
+/* line 135, ../src/screen.scss */
+body.three-col #content {
 }
 /* line 140, ../src/screen.scss */
 body.three-col #license {
