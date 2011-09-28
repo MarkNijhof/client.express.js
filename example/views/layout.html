@@ -10,6 +10,7 @@
     
     <script src='/lib/jquery-1.4.4.min.js' type='text/javascript'></script>
     <script src='/lib/ejs.js' type='text/javascript'></script>
+    <script src='/example/public/javascripts/blog.js'></script>
 
     <script src='/src/client.express.js' type='text/javascript'></script>
     <script src='/src/client.express.logger.js' type='text/javascript'></script>
@@ -32,106 +33,55 @@
     <script src='/example/client_enhancements.js' type='text/javascript'></script>
     
     <link href='http://cre8ivethought.s3.amazonaws.com/images/favicon.png' rel='icon' type='image/png'>
-    <script type="text/javascript">
-      var scroll_top = 10;
-      var to_show_the_profile_picture = true;
-      var to_hide_the_profile_picture = false;
-
-      $(window).scroll(function () {
-      	annimate();
-      });
-      
-      var isHiding = false;
-      var isShowing = false;
-      var visible = true;
-      
-      var annimate = function() {
-        if (is_currently_below_scroll_top() && isHiding) {
-          return;
-        }
-        if (!is_currently_below_scroll_top() && isShowing) {
-          return;
-        }
-        
-        if (is_currently_below_scroll_top() && visible) {
-          hide_logo();
-          return;
-        }
-        if (!is_currently_below_scroll_top() && !visible) {
-          show_logo();
-          return;
-        }
-      };
-
-      var is_currently_below_scroll_top = function (){
-      	return $(window).scrollTop() >= scroll_top;
-      }
-      
-      var hide_logo = function() {
-        isHiding = true;
-    		$('#profile-picture').stop().animate({ width: 0 }, 200, function() { 
-    		  isHiding = false; 
-    		  isShowing = false; 
-    		  visible = false; 
-    		});
-      };
-
-      var show_logo = function() {
-        isShowing = true;
-    		$('#profile-picture').stop().animate({ width: 222 }, 1000, function() { 
-    		  isHiding = false; 
-    		  isShowing = false; 
-    		  visible = true; 
-    		});
-      };
-
-      $(document).ready(function(){
-      	$('#footer').css('margin-bottom', $(window).height() - 550 + 'px');
-      });
-    </script>
-    
   </head>
-  <body>
-    <a href="https://github.com/MarkNijhof/client.express.js"><img style="position: fixed; top: 0; right: 0; border: 0;" src="https://d3nwyuy0nl342s.cloudfront.net/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
-    <div id="container">
-      <div id="left-side">&nbsp;</div>
-      <div id="main-area">
-        <div id="header">
-          <nav>
-            <div id='menu'>
-              <ul>
-                <li><a href='/' title="Client Express - Home">Home</a></li>
-                <li><a href='/guide' title="Client Express - Guide">Guide</a></li>
-                <li><a href='/examples' title="Client Express - Examples">Examples</a></li>
-                <li><a href='/applications' title="Client Express - Applications">Applications</a></li>
-                <li><a href='http://cre8ivethought.com/blog/index'>Cre8ive Thought</a></li>
-              </ul>
-            </div>
-          </nav>
-
-          <div id='profile-picture'></div>
-        </div>
-
-        <div id="content-wrapper">
-          <div id="content">
-            <%- body %>
+  <body class='three-col'>
+    <header>
+      <div id='header'>
+        <nav>
+          <div id='menu'>
+            <ul>
+              <li><a href='/' title="Client Express - Home">Home</a></li>
+              <li><a href='/guide' title="Client Express - Guide">Guide</a></li>
+              <li><a href='/examples' title="Client Express - Examples">Examples</a></li>
+              <li><a href='/applications' title="Client Express - Applications">Applications</a></li>
+              <li><a href='http://cre8ivethought.com/blog/index'>Cre8ive Thought</a></li>
+            </ul>
           </div>
-          <footer>
-            </br>
-            </br>
-            <section>
-              <div id='license'>
-                <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>
-                  <img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/3.0/88x31.png' style='border-width: 0pt;'>
-                </a>
-
-                </br>
-                This work is licensed under a <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>Creative Commons Attribution 3.0 Unported License</a>.
-              </div>
-            </section>
-          </footer>
-        </div>
-        <div id='footer'></div>
+        </nav>
+        <div id='profile-picture'></div>
+      </div>
+      <a href="https://github.com/MarkNijhof/client.express.js"><img style="position: fixed; top: 0; right: 0; border: 0; z-index: 500;" src="https://d3nwyuy0nl342s.cloudfront.net/img/71eeaab9d563c2b3c590319b398dd35683265e85/687474703a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f72696768745f677261795f3664366436642e706e67" alt="Fork me on GitHub"></a>
+    </header>
+    <div id='container'>
+      <div id='left-side'>
+        &nbsp;
+      </div>
+      <div id='main-area'>
+  		<div id='content'>
+	  		<section>
+          <%- body %>
+  	  	</section>
+        <footer>
+          <section>
+            <div id='about'>
+              <br />
+              <br />
+              <br />
+              <h3>
+                License
+              </h3>
+            </div>
+            <div id='license'>
+              <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>
+                <img alt='Creative Commons License' src='http://i.creativecommons.org/l/by/3.0/88x31.png' style='border-width: 0pt;'>
+              </a>
+              <br>
+              This work is licensed under a <a href='http://creativecommons.org/licenses/by/3.0/' rel='license'>Creative Commons Attribution 3.0 Unported License</a>.
+            </div>
+          </section>
+          <br>
+          <br>
+        </footer>
       </div>
       <div id="left-side">&nbsp;</div>
     </div>

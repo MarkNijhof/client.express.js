@@ -70,14 +70,17 @@ ClientExpress.EventListener = (function() {
   var setup_onpopstate_event_handler = function(server) {
     window.onpopstate = function(event) {
       if (event.state) {
-        var request = event.state
-        request.__proto__ = ClientExpress.Request.prototype
-        request.HistoryRequest();
-        
-        server.eventBroker.fire({
-          type: 'ProcessRequest',
-          request: request
-        });
+        try {
+          var request = JSON.parse(event.state);
+          request.__proto__ = ClientExpress.Request.prototype;
+          request.HistoryRequest();
+
+          server.eventBroker.fire({
+            type: 'ProcessRequest',
+            request: request
+          });
+        }
+        catch(err) {}
       }
     };
   };

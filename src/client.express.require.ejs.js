@@ -20,14 +20,14 @@ require.register("ejs.js", function(module, exports, require) {
 
   exports.compile = function(template_url, args) {
     var that = this;
-    var template_html = that.cache.get(template_url);
+    var template_html = that.template_cache.get(template_url);
     if (template_html == '') {
       var ajaxObj = createXMLHttp();
       ajaxObj.open('GET', template_url, false);
       ajaxObj.onreadystatechange = function() {
         if (this.readyState == 4 && this.status == 200) {
           template_html = this.responseText;
-          that.cache.set(template_url, template_html);
+          that.template_cache.set(template_url, template_html);
         }
       };
       ajaxObj.send();
@@ -35,7 +35,7 @@ require.register("ejs.js", function(module, exports, require) {
     return require("ejs_original").render(template_html, { locals: args });
   };
   
-  exports.cache = {
+  exports.template_cache = {
     get: function(path) {
       return this.templates.hasOwnProperty(path) ?
         this.templates[path] : '';

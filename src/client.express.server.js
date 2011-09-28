@@ -201,11 +201,11 @@ ClientExpress.Server = (function() {
   };
   
   var pushState = function(request) {
-    history.pushState(request, request.title, request.location());
+    window.history.pushState(JSON.stringify(request), request.title, request.location());
   };
   
   var replaceState = function(request) {
-    history.replaceState(request, request.title, request.location());
+    window.history.replaceState(JSON.stringify(request), request.title, request.location());
   };
   
   var processRequestEventHandler = function(event) {

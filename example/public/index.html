@@ -1,0 +1,142 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+	<head>
+		<title>Cre8ive Thought</title>
+	    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+	    <meta name="language" content="en"/>
+	    <meta name="robots" content="index,follow"/>
+	    <meta name="description" content="I am an experienced Microsoft .Net C# developer with good knowledge about Object Oriented (OO) design. I put great effort in my code to ensure that it is always clean and readable. I am creative and am always thinking of innovative solutions. I consider myself a Software Craftsman and am a strong believer of continuous improvement and teaching."/>
+	    <meta name="keywords" content="Cre8iveThought, Cre8ive Thought, Software Craftsmanship, Microsoft .Net, C#, Object Oriented"/>
+		<link rel="stylesheet" type="text/css" media="all" href="/stylesheets/style-cards.css"/>
+		<link rel="icon" type="image/png" href="http://cre8ivethought.s3.amazonaws.com/images/favicon.png" />
+		
+		<script src="http://ajax.googleapis.com/ajax/libs/jquery/1.4.2/jquery.min.js"></script>
+		<script src="http://ajax.googleapis.com/ajax/libs/jqueryui/1.8/jquery-ui.min.js"></script>
+		<!--[if lt IE 7]>
+      <script type="text/javascript" src="/javascripts/lib/unitpngfix.js"></script>
+		<![endif]-->		
+    <script type="text/javascript" src="/javascripts/lib/jquery.query-2.1.7.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/microTemplate.js"></script>
+    <script type="text/javascript" src="/javascripts/lib/sammy-0.5.4.min.js"></script>
+    
+    <script type="text/javascript" src="/javascripts/animations.js"></script>
+		
+		<script type="text/javascript">
+			$(document).ready(function() {
+
+    	  var cards = $('#cards');
+    	  var frame = $('#frame');
+    		var animator = new Animator(cards, frame);
+
+
+				cards.click(function(){
+				  location.href = '#/MarkNijhof';
+				});
+				
+				var app = $.sammy(function() {
+
+  				this.get('#/Home', function() { 
+  				  animator.bringInBigCards();
+          });
+
+  				this.get('#/BEKK', function() { 
+  				  animator.loadContent(function(){ return loadText("#bekk_template"); } );
+          });
+
+  				this.get('#/MarkNijhof', function() { 
+  				  animator.loadContent(function(){ return loadText("#about_template"); } );
+          });
+
+  				this.get('#/Contact', function() { 
+  				  animator.loadContent(function(){ return loadText("#contact_template"); } );
+          });
+
+  				this.get('#/Blog', function() { 
+  				  animator.gotoBlog();
+          });
+				
+        });
+        
+			  $(function() {
+          app.run('#/Home');
+        });
+								
+				function loadText(template) {
+					return parseTemplate($(template).html(), {});
+				}
+			});
+	 	</script>
+		<script type="text/html" id="contact_template"> 
+		<div class="textBlock">
+			<h1>Contact</h1>
+			<p>If you have any questions or want to contact me about potential consulting or coaching work, then please don&#39;t hesitate use any one of the options listed below.</p> 
+			<h2>Mark Nijhof</h2>
+			<ul>
+				<li>Phone: 0031 6 2383 0739</li>
+				<li>Skype: marknijhof or Mark@Nijhof.com</li>
+				<li>E-mail: <a href="mailto:Mark.Nijhof@Cre8iveThought.com">Mark.Nijhof@Cre8iveThought.com</a></li>
+			</ul>
+			<br />
+			<ul>
+				<li>Twitter: <a href="http://twitter.com/MarkNijhof">@MarkNijhof</a></li>
+				<li>GTalk: Mark.Nijhof@Gmail.com</li>
+				<li>MSN: Mark@Nijhof.com</li>
+			</ul>
+		</div>
+		</script>
+		<script type="text/html" id="about_template"> 
+		<div class="textBlock">
+			<h1>Mark Nijhof</h1>
+      <p>Mark is a Software Developer experienced in the Microsoft .Net framework, he has developed / implemented a diverse range of Object-Oriented software solutions. Mark has been working closely with customers to achieve high quality solutions. Mark is always learning new technologies en theories to improve his programming skills; he is especially interested in all the different Object-Oriented design principles, and in languages like Ruby and Node.js.</p>
+      <h2>Specialties:</h2>
+      <p>Creative thinker, Team player, C#, .Net, Ruby, Agile Software Development, TDD, DDD, Continuous Integration, Web Services, Web Applications</p>
+		</div>
+		</script>
+	</head>
+	<body>
+		<noscript>
+  		<div class="textBlock">
+  			<h1>Mark Nijhof</h1>
+        <p>Mark is a Software Developer experienced in the Microsoft .Net framework, he has developed / implemented a diverse range of Object-Oriented software solutions. Mark has been working closely with customers to achieve high quality solutions. Mark is always learning new technologies en theories to improve his programming skills; he is especially interested in all the different Object-Oriented design principles, and in languages like Ruby and Node.js.</p>
+        <p>In August 2000 he started his career at CSC Computer Sciences BV working on different web based applications. In April 2004 he moved to Norway and started working for Vizrt joining an existing development team in product development of one of Vizrt’s product groups. Mark moved in March 2006 to Sydney Australia to start working for Vizrt as a Solution Architect and support person. In July 2007 Mark started working for his first employer again, joining the software factory in Agile SOA development. In July 2008 he moved back to Norway where he started working for Reaktor. Then in August 2010 Mark started working as a Developer for BEKK Consulting in Oslo.</p>
+        <h2>Specialties:</h2>
+        <p>Creative thinker, Team player, C#, .Net, Ruby, Agile Software Development, TDD, DDD, Continuous Integration, Web Services, Web Applications</p>
+  		</div>
+		  
+		  <div class="textBlock">
+  			<h1>Contact</h1>
+  			<p>If you have any questions or want to contact me about potential consulting or coaching work, then please don&#39;t hesitate use any one of the options listed below.</p> 
+  			<h2>Mark Nijhof</h2>
+  			<ul>
+  				<li>Phone: 0031 6 2383 0739</li>
+  				<li>Skype: marknijhof or Mark@Nijhof.com</li>
+  				<li>E-mail: <a href="mailto:Mark.Nijhof@Cre8iveThought.com">Mark.Nijhof@Cre8iveThought.com</a></li>
+  			</ul>
+  			<br />
+  			<ul>
+  				<li>Twitter: <a href="http://twitter.com/MarkNijhof">@MarkNijhof</a></li>
+  				<li>GTalk: Mark.Nijhof@Gmail.com</li>
+  				<li>MSN: Mark@Nijhof.com</li>
+  			</ul>
+  		</div>
+		</noscript>
+		<div id="cards"></div>
+		<div id="frame"></div>
+		
+		<img src="http://cre8ivethought.s3.amazonaws.com/images/frame-back.png" alt="" style="display: none">
+		<img src="http://cre8ivethought.s3.amazonaws.com/images/card-front.png" alt="" style="display: none">
+		<img src="http://cre8ivethought.s3.amazonaws.com/images/card-back.png" alt="" style="display: none">
+		<img src="http://cre8ivethought.s3.amazonaws.com/images/card-front.png" alt="" style="display: none">
+		
+		<script type="text/javascript">
+		var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+		document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+		</script>
+		<script type="text/javascript">
+		try {
+		var pageTracker = _gat._getTracker("UA-116586-8");
+		pageTracker._setDomainName(".cre8ivethought.com");
+		pageTracker._trackPageview();
+		} catch(err) {}</script>
+	</body>
+</html>
