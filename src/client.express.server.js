@@ -218,6 +218,10 @@ ClientExpress.Server = (function() {
       event.request.delegateToServer();
       return;
     }
+
+    if (!event.request.isHistoryRequest && !event.request.isRedirect) {
+      pushState(event.request);
+    }    
   
     this.log('information', 200, request.method.toUpperCase().lpad("    "), request.originalUrl);
   
@@ -228,9 +232,9 @@ ClientExpress.Server = (function() {
   };
   
   var requestProcessedEventHandler = function(event) {
-    if (!event.request.isHistoryRequest && !event.request.isRedirect) {
-      pushState(event.request);
-    }    
+    // if (!event.request.isHistoryRequest && !event.request.isRedirect) {
+    //   pushState(event.request);
+    // }    
   }
   
   var beforeRenderEventHandler = function(event) {
