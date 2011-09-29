@@ -2,7 +2,6 @@
 ClientExpress.Request = (function(raw_data) {
   
   var Request = function(raw_data) {
-    var self = this;
     this.isHistoryRequest = false;
     this.session = raw_data.session;
     this.title = raw_data.title;
@@ -31,15 +30,15 @@ ClientExpress.Request = (function(raw_data) {
             nestedParamRegex = /^(\w+)\[(\w+)\]/,
             nested;
 
-        if (nested = nestedParamRegex.exec(paramName)) {
-          var paramParent = nested[1];
-          var paramName = nested[2];
+        if ((nested = nestedParamRegex.exec(paramName)) === true) {
+          paramParent = nested[1];
+          paramName = nested[2];
           var parentParams = object[paramParent] || {};
           parentParams[paramName] = paramValue;
           object[paramParent] = parentParams;
         } else {
           object[paramName] = paramValue;
-        };
+        }
       });
     }
   };
@@ -51,16 +50,16 @@ ClientExpress.Request = (function(raw_data) {
   };
   
   Request.prototype.location = function () {
-    return (this.method === 'get') ? this.originalUrl : ''
-  }
+    return (this.method === 'get') ? this.originalUrl : '';
+  };
   
   Request.prototype.param = function (name) {
     return this.params[name] || this.body[name] || this.query[name] || undefined;
-  }
+  };
   
   Request.prototype.HistoryRequest = function () {
     this.isHistoryRequest = true;
-  }
+  };
     
   return Request;
 

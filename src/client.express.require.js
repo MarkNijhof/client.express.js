@@ -123,3 +123,9 @@ require.register("express.js", function(module, exports, require){
 
 });
 
+require.register("clientexpress.js", function(module, exports, require){
+
+  exports.attach = function(server) {};
+  
+});
+

@@ -21,7 +21,7 @@ ClientExpress.Server = (function() {
     this.eventBroker.addListener('onRender', renderEventHandler);
     this.eventBroker.addListener('onSend', sendEventHandler);
     this.eventBroker.addListener('onRedirect', redirectEventHandler); 
-  }
+  };
 
   Server.prototype.log = function() {
     this.eventBroker.fire({
@@ -57,7 +57,7 @@ ClientExpress.Server = (function() {
   
       var join_routes = function(base_path, route) {
         if (route instanceof RegExp) {
-          var source = route.source
+          var source = route.source;
           if (source.substr(0, 1) == '^') {
             return new RegExp('^' + base_path + source.substr(1, source.length));
           }
@@ -78,17 +78,17 @@ ClientExpress.Server = (function() {
   
       var routes = other_server.router.routes;
   
-      var routes = routes.get.concat(
-                     routes.post.concat(
-                       routes.put.concat(
-                         routes.del.concat(
-                           routes.before.concat(
-                             routes.after
-                           )
-                         )
+      routes = routes.get.concat(
+                 routes.post.concat(
+                   routes.put.concat(
+                     routes.del.concat(
+                       routes.before.concat(
+                         routes.after
                        )
                      )
-                   );
+                   )
+                 )
+               );
                
       ClientExpress.utils.forEach(routes, function(other_route) {
         add_route(server, other_route.method, join_routes(path, other_route.path), other_route.action, path);
@@ -115,7 +115,7 @@ ClientExpress.Server = (function() {
     } else {
       this.settings[setting] = true;
     }
-  }
+  };
   
   Server.prototype.disable = function(setting) {
     if (this.settings.hasOwnProperty(setting)) {
@@ -123,15 +123,15 @@ ClientExpress.Server = (function() {
     } else {
       this.settings[setting] = false;
     }
-  }
+  };
   
   Server.prototype.enabled = function(setting) {
     return this.settings.hasOwnProperty(setting) && this.settings[setting];
-  }
+  };
   
   Server.prototype.disabled = function(setting) {
     return this.settings.hasOwnProperty(setting) && !this.settings[setting];
-  }
+  };
   
   Server.prototype.register = function(ext, template_engine){
     if (template_engine === undefined) {
@@ -235,7 +235,7 @@ ClientExpress.Server = (function() {
     // if (!event.request.isHistoryRequest && !event.request.isRedirect) {
     //   pushState(event.request);
     // }    
-  }
+  };
   
   var beforeRenderEventHandler = function(event) {
     var server = this;
@@ -263,7 +263,7 @@ ClientExpress.Server = (function() {
   };
   
   var renderEventHandler = function(event) {
-    var views = this.settings['views'] || "";
+    var views = this.settings.views || "";
     var ext = this.settings['view engine'] || "";
     
     var template = views + event.template;
@@ -272,7 +272,7 @@ ClientExpress.Server = (function() {
       ext = template.substr(template.lastIndexOf(".") - 1, template.length);
       template = template.substr(0, template.lastIndexOf(".") - 1);
     }
-    var ext = ext || this.settings['view engine'] || "";
+    ext = ext || this.settings['view engine'] || "";
     
     if (ext != "") {
       ext = "." + ext;

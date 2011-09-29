@@ -6,7 +6,7 @@ ClientExpress.Logger = (function() {
   
   var formatString = function (args) {
     return args[0].join(' ');
-  }
+  };
 
   Logger.prototype.error = function () {
     if (typeof console == "undefined") {

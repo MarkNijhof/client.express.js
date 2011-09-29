@@ -23,8 +23,8 @@ ClientExpress.utils = (function () {
    */
   if (Array.prototype.every) {
     var every = function (array, fn) {
-      return array.every(fn, arguments[2])
-    }
+      return array.every(fn, arguments[2]);
+    };
   } else {
     var every = function (array, fn) {
       if (array === void 0 || array === null) throw new TypeError();
@@ -38,7 +38,7 @@ ClientExpress.utils = (function () {
       }
 
       return true;
-    }
+    };
   };
 
   /**
@@ -155,9 +155,9 @@ ClientExpress.utils = (function () {
         var nameA = (a[name] instanceof RegExp ? a[name].source : a[name]).toLowerCase();
         var nameB = (b[name] instanceof RegExp ? b[name].source : b[name]).toLowerCase();
         
-        return (nameA < nameB) ?
+        return nameA < nameB ?
           -1 :
-          (nameA > nameB) ?
+          nameA > nameB ?
             1 :
             0;
       });

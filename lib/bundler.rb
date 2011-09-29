@@ -10,8 +10,8 @@ class Bundler
     def bundle!
       FileUtils.mkdir_p(DIST_DIR)
 
-      sh "juicer merge -s -i #{SRC_DIR}/client.express.bundle.js -o #{DIST_DIR}/client.express.min-#{version}.js -m closure_compiler -f"
-      sh "juicer merge -s -i #{SRC_DIR}/client.express.require.ejs.js -o #{DIST_DIR}/client.express.require.ejs.min-#{version}.js -m closure_compiler -f"
+      sh "juicer merge -s #{SRC_DIR}/client.express.bundle.js -o #{DIST_DIR}/client.express.min-#{version}.js -m closure_compiler -f"
+      sh "juicer merge -s #{SRC_DIR}/client.express.require.ejs.js -o #{DIST_DIR}/client.express.require.ejs.min-#{version}.js -m closure_compiler -f"
       
       write "#{DIST_DIR}/client.express.min-#{version}.js"
       write "#{DIST_DIR}/client.express.require.ejs.min-#{version}.js"

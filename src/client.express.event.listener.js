@@ -45,8 +45,6 @@ ClientExpress.EventListener = (function() {
       var element = ev.target || ev.srcElement;
       
       if (element.tagName.toLowerCase() == 'form') {
-        var self = this
-      
         var request = new ClientExpress.Request({
           method: element.method,
           originalUrl: element.action,

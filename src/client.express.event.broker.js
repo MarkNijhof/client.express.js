@@ -35,7 +35,7 @@ ClientExpress.EventBroker = (function(server) {
       event = { type: event };
     }
     if (!event.target){
-      event.target = this.server;
+      event.target = that.server;
     }
 
     if (!event.type){  //falsy
@@ -44,10 +44,10 @@ ClientExpress.EventBroker = (function(server) {
     
     event.type = 'on' + event.type;
     
-    if (this.eventListeners[event.type] instanceof Array){
-      var listeners = this.eventListeners[event.type];
+    if (that.eventListeners[event.type] instanceof Array){
+      var listeners = that.eventListeners[event.type];
       listeners.forEach(function(item) {
-        item.call(this.server, event);
+        item.call(that.server, event);
       });
     }
   };
