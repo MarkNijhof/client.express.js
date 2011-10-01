@@ -1,8 +1,5 @@
 
-
-require.modules['ejs_original.js'] = require.modules['ejs.js'];
-
-require.register("ejs.js", function(module, exports, require) {
+require.register("stache.js", function(module, exports, require) {
   var createXMLHttp = function() {
     if (typeof XMLHttpRequest != 'undefined') {
       return new XMLHttpRequest();
@@ -32,7 +29,7 @@ require.register("ejs.js", function(module, exports, require) {
       };
       ajaxObj.send();
     }
-    return require("ejs_original").render(template_html, { locals: args });
+    return Mustache.to_html(template_html, args.locals);
   };
   
   exports.template_cache = {

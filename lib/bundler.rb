@@ -12,12 +12,14 @@ class Bundler
 
       sh "juicer merge -s #{SRC_DIR}/client.express.bundle.js -o #{DIST_DIR}/client.express.min-#{version}.js -m closure_compiler -f"
       sh "juicer merge -s #{SRC_DIR}/client.express.require.ejs.js -o #{DIST_DIR}/client.express.require.ejs.min-#{version}.js -m closure_compiler -f"
+      sh "juicer merge -s #{SRC_DIR}/client.express.require.stache.js -o #{DIST_DIR}/client.express.require.stache.min-#{version}.js -m closure_compiler -f"
       
       write "#{DIST_DIR}/client.express.min-#{version}.js"
       write "#{DIST_DIR}/client.express.require.ejs.min-#{version}.js"
       
       sh "cp #{DIST_DIR}/client.express.min-#{version}.js #{DIST_DIR}/client.express.min-latest.js"
       sh "cp #{DIST_DIR}/client.express.require.ejs.min-#{version}.js #{DIST_DIR}/client.express.require.ejs.min-latest.js"
+      sh "cp #{DIST_DIR}/client.express.require.stache.min-#{version}.js #{DIST_DIR}/client.express.require.stache.min-latest.js"
     end
 
     private
