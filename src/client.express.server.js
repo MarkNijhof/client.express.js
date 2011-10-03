@@ -283,6 +283,8 @@ ClientExpress.Server = (function() {
 
     event.content_element.innerHTML = templateEngine.compile(template, event.args);
     
+    runScriptsContainedInTemplate(event.content_element);
+    
     this.eventBroker.fire({
       type: 'AfterRender',
       request: event.request,
@@ -291,6 +293,34 @@ ClientExpress.Server = (function() {
       template: event.template,
       args: event.args
     });
+  };
+
+  var runScriptsContainedInTemplate = function (content_element) {
+    if (content_element.nodeType != 1) {
+      return;
+    }
+
+    if (content_element.tagName.toLowerCase() == 'script') {
+      if (content_element.src !== "") {
+        content_element.appendChild((function() {
+          var s = document.createElement('script');
+          s.type = 'text/javascript';
+          s.src = content_element.src;
+          return s;
+        })());
+      } else {
+        eval(content_element.text);
+      }
+    }
+    else {
+      var content_element_child = content_element.firstChild;
+      while ( content_element_child ) {
+        if ( content_element_child.nodeType == 1 ) {
+          runScriptsContainedInTemplate( content_element_child );
+        }
+        content_element_child = content_element_child.nextSibling;
+      }
+    }
   };
 
   var afterRenderEventHandler = function(event) {
