@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/MarkNijhof/client.express.js.png)](http://travis-ci.org/MarkNijhof/client.express.js)
 
 # Client.Express.js
   
